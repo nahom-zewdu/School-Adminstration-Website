@@ -1,6 +1,6 @@
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model     #returns the User model that is active in these project
-from .models import Student
+from ..models import Student
 
 
 class StudentAuthBackend(ModelBackend):
@@ -17,6 +17,3 @@ class StudentAuthBackend(ModelBackend):
                 return student.user
         
         return None
-
-
-

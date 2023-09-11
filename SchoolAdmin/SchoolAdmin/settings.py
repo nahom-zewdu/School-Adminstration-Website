@@ -126,7 +126,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Custome backend authentications for different Users
 AUTHENTICATION_BACKENDS = [
-    'base.backends.StudentAuthBackend',
+    'base.backends.student_backends.StudentAuthBackend',
+    'base.backends.teacher_backends.TeacherAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
     # Add more custom backends or rearrange the order as needed
 ]
