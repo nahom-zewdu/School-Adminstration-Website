@@ -12,11 +12,15 @@ class Student(models.Model):
         ('8', 'Grade 8'),
         ('9', 'Grade 9'),
         ('10', 'Grade 10'),]
-
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female')
+    ]
     user = models.OneToOneField(User, on_delete=models.CASCADE) # One to one relationship with user model
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     age = models.CharField(max_length=2)
-    grade = models.CharField(max_length=2, choices=GRADE_CHOICES)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
+    grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -38,13 +42,18 @@ class Teacher(models.Model):
         ('8', 'Grade 8'),
         ('9', 'Grade 9'),
         ('10', 'Grade 10'),]
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female')
+    ]
 
     user = models.OneToOneField(User,on_delete=models.CASCADE,)
     teacher_id = models.CharField(max_length=6, editable=False, unique=True)
-    subject = models.CharField(max_length=20)
+    subject = models.CharField(max_length=20, null=False, blank=False)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
     qualifications = models.CharField(max_length=30)
     experience = models.IntegerField()
-    teaches_grade = models.CharField(max_length=2, )
+    teaches_grade = models.CharField(max_length=2, null=False, blank=False)
 
     def save(self, *args, **kwargs):
         if not self.id:
