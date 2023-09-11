@@ -20,10 +20,39 @@ class Student(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.id_number = self.generate_unique_id_number()
+            self.student_id = self.generate_unique_student_id()
         super().save(*args, **kwargs)
 
-    def generate_unique_id_number(self):
-        id_number = str(random.randint(1000, 9999))
-        if not Student.objects.filter(id_number='19' + id_number).exists():
-            return id_number
+    def generate_unique_student_id(self):
+        while True:
+            student_id = '19' +  str(random.randint(1000, 9999))
+            if not Student.objects.filter(student_id=student_id).exists():
+                return student_id
+
+
+class Teacher(models.Model):
+    GRADE_CHOICES = [
+        ('5', 'Grade 5'),
+        ('6', 'Grade 6'),
+        ('7', 'Grade 7'),
+        ('8', 'Grade 8'),
+        ('9', 'Grade 9'),
+        ('10', 'Grade 10'),]
+
+    user = models.OneToOneField(User,on_delete=models.CASCADE,)
+    teacher_id = models.CharField(max_length=6, editable=False, unique=True)
+    subject = models.CharField(max_length=20)
+    qualifications = models.CharField(max_length=30)
+    experience = models.IntegerField()
+    teaches_grade = models.CharField(max_length=2, )
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.teacher_id = self.generate_unique_teacher_id()
+        super().save(*args, **kwargs)
+
+    def generate_unique_teacher_id(self):
+        while True:
+            teacher_id = str(random.randint(1000, 9999))
+            if not Student.objects.filter(teacher_id='12' + teacher_id).exists():
+                return teacher_id
