@@ -17,3 +17,13 @@ class Student(models.Model):
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     age = models.CharField(max_length=2)
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id_number = self.generate_unique_id_number()
+        super().save(*args, **kwargs)
+        
+    def generate_unique_id_number(self):
+        id_number = str(random.randint(1000, 9999))
+        if not Student.objects.filter(id_number='19' + id_number).exists():
+            return id_number
