@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
+import random
 # Create your models here.
 
 class Student(models.Model):
@@ -22,7 +22,7 @@ class Student(models.Model):
         if not self.id:
             self.id_number = self.generate_unique_id_number()
         super().save(*args, **kwargs)
-        
+
     def generate_unique_id_number(self):
         id_number = str(random.randint(1000, 9999))
         if not Student.objects.filter(id_number='19' + id_number).exists():
