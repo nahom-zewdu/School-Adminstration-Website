@@ -65,3 +65,9 @@ class Teacher(models.Model):
             teacher_id = '12' +  str(random.randint(1000, 9999))
             if not Student.objects.filter(teacher_id=teacher_id).exists():
                 return teacher_id
+
+
+class Parent(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    parent_to = models.ManyToManyField(Student)
+    phone_no = models.CharField(max_length=15)
