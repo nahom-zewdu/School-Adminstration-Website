@@ -122,3 +122,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#Custome backend authentications for different Users
+AUTHENTICATION_BACKENDS = [
+    'base.backends.StudentAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    # Add more custom backends or rearrange the order as needed
+]
