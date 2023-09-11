@@ -53,6 +53,6 @@ class Teacher(models.Model):
 
     def generate_unique_teacher_id(self):
         while True:
-            teacher_id = str(random.randint(1000, 9999))
-            if not Student.objects.filter(teacher_id='12' + teacher_id).exists():
+            teacher_id = '12' +  str(random.randint(1000, 9999))
+            if not Student.objects.filter(teacher_id=teacher_id).exists():
                 return teacher_id
