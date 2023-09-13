@@ -16,7 +16,7 @@ class Student(models.Model):
         ('M', 'Male'),
         ('F', 'Female')
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Custome User Field Name') # One to one relationship with user model
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Custom User Field Name') # One to one relationship with user model
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     age = models.CharField(max_length=2)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
@@ -47,7 +47,7 @@ class Teacher(models.Model):
         ('F', 'Female')
     ]
 
-    user = models.OneToOneField(User,on_delete=models.CASCADE, verbose_name='Custome User Field Name')
+    user = models.OneToOneField(User,on_delete=models.CASCADE, verbose_name='Custom User Field Name')
     teacher_id = models.CharField(max_length=6, editable=False, unique=True)
     subject = models.CharField(max_length=20, null=False, blank=False)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
@@ -68,6 +68,6 @@ class Teacher(models.Model):
 
 
 class Parent(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Custome User Field Name')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Custom User Field Name')
     parent_to = models.ManyToManyField(Student)
     phone_no = models.CharField(max_length=15)
