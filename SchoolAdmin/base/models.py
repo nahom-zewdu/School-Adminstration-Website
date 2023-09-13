@@ -17,15 +17,16 @@ class Student(models.Model):
         ('F', 'Female')
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Student') # One to one relationship with user model
-    name = models.CharField(max_length=44, null=True)
+    name = models.CharField(max_length=44, null=True, blank=True)
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     age = models.CharField(max_length=2)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
 
     def save(self, *args, **kwargs):
-        self.name = self.user.username
-        if not self.id:
+        if not self.name:
+            self.name = self.user.username
+        if not self.student_id:
             self.student_id = self.generate_unique_student_id()
         super().save(*args, **kwargs)
 
@@ -52,7 +53,7 @@ class Teacher(models.Model):
     ]
 
     user = models.OneToOneField(User,on_delete=models.CASCADE, verbose_name='Teacher')
-    name = models.CharField(max_length=44, null=True)
+    name = models.CharField(max_length=44, null=True, blank=True)
     teacher_id = models.CharField(max_length=6, editable=False, unique=True)
     subject = models.CharField(max_length=20, null=False, blank=False)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
@@ -61,8 +62,9 @@ class Teacher(models.Model):
     teaches_grade = models.CharField(max_length=2, null=False, blank=False)
 
     def save(self, *args, **kwargs):
-        self.name = self.user.username
-        if not self.id:
+        if not self.name:
+            self.name = self.user.username
+        if not self.teacher_id:
             self.teacher_id = self.generate_unique_teacher_id()
         super().save(*args, **kwargs)
 
@@ -77,12 +79,13 @@ class Teacher(models.Model):
 
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Parent')
-    name = models.CharField(max_length=44, null=True)
+    name = models.CharField(max_length=44, null=True, blank=True)
     parent_to = models.ManyToManyField(Student)
     phone_no = models.CharField(max_length=15)
 
     def save(self, *args, **kwargs):
-        self.name = self.user.username
+        if not self.name:
+            self.name = self.user.username
         super().save(*args, **kwargs)
 
 
