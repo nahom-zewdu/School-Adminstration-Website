@@ -94,7 +94,7 @@ class Parent(models.Model):
     def generate_unique_parent_id(self):
         while True:
             parent_id = '21' +  str(random.randint(1000, 9999))
-            if not Student.objects.filter(parent_id=parent_id).exists():
+            if not Parent.objects.filter(parent_id=parent_id).exists():
                 return parent_id
 
     def __str__(self):
