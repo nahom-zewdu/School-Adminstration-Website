@@ -80,14 +80,22 @@ class Teacher(models.Model):
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Parent')
     name = models.CharField(max_length=44, null=True, blank=True)
+    parent_id = models.CharField(max_length=6, editable=False, unique=True)
     parent_to = models.ManyToManyField(Student)
     phone_no = models.CharField(max_length=15)
 
     def save(self, *args, **kwargs):
         if not self.name:
             self.name = self.user.username
+        if not self.parent_id:
+            self.parent_id = self.generate_unique_parent_id()
         super().save(*args, **kwargs)
 
+    def generate_unique_parent_id(self):
+        while True:
+            parent_id = '21' +  str(random.randint(1000, 9999))
+            if not Student.objects.filter(parent_id=parent_id).exists():
+                return parent_id
 
     def __str__(self):
         return self.name
