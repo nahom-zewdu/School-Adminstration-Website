@@ -1,10 +1,17 @@
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, HttpResponse, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect
+from django.urls import reverse
 
 # Create your views here.
 
 def home(request):
     return render(request, 'home.html', {'MTA': 'MTA'})
+
+
+def logout_view(request):
+    logout(request)
+
+    return HttpResponsePermanentRedirect(reverse('base:home'))
 
 
 def student_login(request):
