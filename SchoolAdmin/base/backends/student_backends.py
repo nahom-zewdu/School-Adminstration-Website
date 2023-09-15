@@ -9,7 +9,7 @@ class StudentAuthBackend(ModelBackend):
         student_id = kwargs.get('student_id')
 
         try:
-            studet = Student.objects.get(student_id=student_id)
+            student = Student.objects.get(student_id=student_id)
         except Student.DoesNotExist:
             return None
         else:
