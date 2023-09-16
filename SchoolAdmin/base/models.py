@@ -71,7 +71,7 @@ class Teacher(models.Model):
     def generate_unique_teacher_id(self):
         while True:
             teacher_id = '12' +  str(random.randint(1000, 9999))
-            if not Student.objects.filter(teacher_id=teacher_id).exists():
+            if not Teacher.objects.filter(teacher_id=teacher_id).exists():
                 return teacher_id
 
     def __str__(self):
