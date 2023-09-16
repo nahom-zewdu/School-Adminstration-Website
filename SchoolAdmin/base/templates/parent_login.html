@@ -10,11 +10,11 @@
         {% if error_message %}
             <p>{{error_message}}</p>
         {% endif %}
-        <form method="Post" action="{% url 'base:teacher_login' %}">
+        <form method="Post" action="{% url 'base:parent_login' %}">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="text" class="form-label">Teacher Id</label>
-                <input type="text" class="form-control" id="text" name="teacher_id" placeholder="19****">
+                <label for="text" class="form-label">Parent Id</label>
+                <input type="text" class="form-control" id="text" name="parent_id" placeholder="21****">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
