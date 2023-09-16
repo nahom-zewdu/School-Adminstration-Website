@@ -3,8 +3,6 @@ from django.contrib.auth import get_user_model     #returns the User model that 
 from ..models import Teacher
 
 
-
-
 class TeacherAuthBackend(ModelBackend):
     def authenticate(self,request,**kwargs):
         UserMode = get_user_model()
