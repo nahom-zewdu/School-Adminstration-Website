@@ -28,3 +28,20 @@ def student_login(request):
             return render(request, 'student_login.html', {'error_message': error_message})
     else:
         return render(request, 'student_login.html')
+
+
+
+def teacher_login(request):
+    if request.method == 'POST':
+        teacher_id = request.POST['teacher_id']
+        password = request.POST['password']
+
+        user = authenticate(request, teacher_id=teacher_id, password=password)
+        if user:
+            login(request, user)
+            return redirect('base:home')
+        else:
+            error_message = 'Invalid ID number or Password'
+            return render(request, 'teacher_login.html', {'error_message': error_message})
+    else:
+        return render(request, 'teacher_login.html')
