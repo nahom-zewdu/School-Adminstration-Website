@@ -6,10 +6,6 @@ import random
 
 
 
-class Grade_7_8(models.Model):
-    physics = models.CharField(max_length=4)
-    chemistry = models.CharField(max_length=4)
-    biology = models.CharField(max_length=4)
 
 class Student(models.Model):
     GRADE_CHOICES = [
@@ -29,7 +25,7 @@ class Student(models.Model):
     age = models.CharField(max_length=2)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
     # grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
-    grade = models.OneToOneField(Grade_7_8, on_delete=models.CASCADE)
+    # grade_7_8 = models.ForeignKey(Grade_7_8, on_delete=models.CASCADE)
 
 
     def save(self, *args, **kwargs):
@@ -48,6 +44,16 @@ class Student(models.Model):
     def __str__(self):
         return self.name
 
+
+
+class Grade_7_8(models.Model):
+    physics = models.CharField(max_length=4)
+    chemistry = models.CharField(max_length=4)
+    biology = models.CharField(max_length=4)
+    student = models.OneToOneField(Student, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.student.name
 class Teacher(models.Model):
     GRADE_CHOICES = [
         ('5', 'Grade 5'),
