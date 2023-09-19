@@ -6,7 +6,13 @@ from .models import Student, Teacher
 # Create your views here.
 
 def home(request):
-    return render(request, 'home.html', {'MTA': 'MTA'})
+    students = Student.objects.all()
+    teachers = Teacher.objects.all()
+    context = {
+        'teachers': teachers,
+        'students': students,
+    }
+    return render(request, 'home.html', context)
 
 
 def logout_view(request):
