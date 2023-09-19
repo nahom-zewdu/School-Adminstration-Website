@@ -114,8 +114,26 @@
   <div class="container text-center p-4 text-light">
     <h1>2015 Statistcs</h1>
     <div class="row">
-      <div class="col-6">Students - {{students.count}}</div>
-      <div class="col-6">Teachers - {{teachers.count}}</div>
+      <div class="col-6 d-flex justify-content-center align-items-center">
+        <div class="card shadow-xlg h-100" style="max-width: 10rem;">
+          <div class="card-header">
+            Students
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{students.count}}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 d-flex justify-content-center align-items-center">
+        <div class="card shadow-xlg h-100" style="max-width: 10rem;">
+          <div class="card-header">
+            Teachers
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{teachers.count}}</h5>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
