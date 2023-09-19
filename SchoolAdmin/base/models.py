@@ -4,6 +4,13 @@ from django.contrib.auth.models import User
 import random
 # Create your models here.
 
+
+
+class Grade_7_8(models.Model):
+    physics = models.CharField(max_length=4)
+    chemistry = models.CharField(max_length=4)
+    biology = models.CharField(max_length=4)
+
 class Student(models.Model):
     GRADE_CHOICES = [
         ('5', 'Grade 5'),
@@ -21,7 +28,9 @@ class Student(models.Model):
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     age = models.CharField(max_length=2)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
-    grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
+    # grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
+    grade = models.OneToOneField(Grade_7_8, on_delete=models.CASCADE)
+
 
     def save(self, *args, **kwargs):
         if not self.name:
@@ -99,4 +108,5 @@ class Parent(models.Model):
 
     def __str__(self):
         return self.name
+
 
