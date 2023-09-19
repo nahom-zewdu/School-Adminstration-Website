@@ -41,6 +41,10 @@ class Student(models.Model):
             if not Student.objects.filter(student_id=student_id).exists():
                 return student_id
 
+    @classmethod
+    def filter_by_gender(cls, gender):
+        return cls.objects.filter(gender=gender) 
+
     def __str__(self):
         return self.name
 
@@ -89,6 +93,11 @@ class Teacher(models.Model):
             if not Teacher.objects.filter(teacher_id=teacher_id).exists():
                 return teacher_id
 
+
+    @classmethod
+    def filter_by_gender(cls, gender):
+        return cls.objects.filter(gender=gender) 
+        
     def __str__(self):
         return self.name
 
