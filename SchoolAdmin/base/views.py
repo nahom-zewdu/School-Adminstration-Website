@@ -15,6 +15,10 @@ def home(request):
     return render(request, 'home.html', context)
 
 
+def academics(request):
+    return render(request, 'academics.html')
+
+
 def logout_view(request):
     logout(request)
 
