@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} MTA School {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="p-4 col-9 col-sm-6 col-lg-4 mt-5 cont gradient text-light">
+        <p class="text-light text-center rounded bg-danger">You have to login to access this page</p>
+        <h2 class="mb-4 text-center">Chose to Login</h2>
+        <ul class="nav bg-primary d-flex justify-content-center">
+          <li class="nav-item"><a class="text-light nav-link" href="{% url 'base:student_login' %}">Student</a></li>
+          <li class="nav-item"><a class="border border-light border-top-0 border-bottom-0 text-light nav-link" href="{% url 'base:teacher_login' %}">Teacher</a></li>
+          <li class="nav-item"><a class="text-light nav-link" href="{% url 'base:parent_login' %}">Parent</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}
