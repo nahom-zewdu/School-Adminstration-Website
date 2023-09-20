@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect
 from django.urls import reverse
 from .models import Student, Teacher
@@ -14,9 +15,13 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
+@login_required(login_url='/restricted/')
+def student_academics(request):
+    return render(request, 'student_academics.html')
 
-def academics(request):
-    return render(request, 'academics.html')
+@login_required(login_url='/restricted/')
+def teacher_academics(request):
+    return render(request, 'teacher_academics.html')
 
 
 def logout_view(request):
@@ -72,3 +77,6 @@ def parent_login(request):
             return render(request, 'parent_login.html', {'error_message': error_message})
     else:
         return render(request, 'parent_login.html')
+
+def restricted_view(request):
+    return render(request, 'restricted.html')
