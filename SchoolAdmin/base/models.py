@@ -42,7 +42,7 @@ class Student(models.Model):
 
 
 
-class Grade_7_8(models.Model):
+class Grade(models.Model):
     GRADE_CHOICES = [
         ('5', 'Grade 5'),
         ('6', 'Grade 6'),
