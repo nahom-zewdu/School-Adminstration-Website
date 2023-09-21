@@ -57,6 +57,12 @@ class Grade(models.Model):
     chemistry = models.CharField(max_length=4)
     biology = models.CharField(max_length=4)
 
+    
+    @classmethod
+    def filter_by_grade(cls, grade):
+        return cls.objects.filter(grade=grade) 
+        
+
     def __str__(self):
         return self.student.name
 class Teacher(models.Model):
