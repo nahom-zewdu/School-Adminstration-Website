@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.forms.models import inlineformset_factory
-from .models import Student, Teacher, Parent, Grade_7_8
-from .forms import Grade_7_8_Form
+from .models import Student, Teacher, Parent, Grade
+from .forms import GradeForm
 
 
-class Grade_7_8_Inline(admin.StackedInline):
-    model = Grade_7_8
-    form = Grade_7_8_Form
+class GradeInline(admin.StackedInline):
+    model = Grade
+    form = GradeForm
 
 class StudentAdmin(admin.ModelAdmin):
-    inlines = [Grade_7_8_Inline]
+    inlines = [GradeInline]
 
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
