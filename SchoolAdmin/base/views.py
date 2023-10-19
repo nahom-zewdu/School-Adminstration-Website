@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect
 from django.urls import reverse
-from .models import Student, Teacher, Grade
+from .models import Student, Teacher, Subject
 
 # Create your views here.
 
@@ -19,12 +19,12 @@ def home(request):
 @login_required(login_url='/restricted/')
 def student_academics(request):
     students = Student.objects.all()
-    grade = Grade.objects.all()
+    subjects = Subject.objects.all()
     female = Student.filter_by_gender('F')
     male = Student.filter_by_gender('M')
     context = {
         'students': students,
-        'grade': grade,
+        'subjects': subjects,
         'female': female,
         'male': male,
     }
@@ -35,13 +35,12 @@ def student_academics(request):
 @login_required(login_url='/restricted/')
 def teacher_academics(request):
     teachers = Teacher.objects.all()
-    grade = Grade.objects.all()
-    grade = Grade.objects.all()
+    subjects = Subject.objects.all()
     female = Teacher.filter_by_gender('F')
     male = Teacher.filter_by_gender('M')
     context = {
-        'teacher': teacher,
-        'grade': grade,
+        'teachers': teachers,
+        'subjects': subjects,
         'female': female,
         'male': male,
     }
@@ -86,6 +85,21 @@ def teacher_login(request):
     else:
         return render(request, 'teacher_login.html')
 
+
+def staff_login(request):
+    if request.method == 'POST':
+        staff_id = request.POST['staff_id']
+        password = request.POST['password']
+
+        user = authenticate(request, staff_id=staff_id, password=password)
+        if user:
+            login(request, user)
+            return redirect('base:home')
+        else:
+            error_message = 'Invalid ID number or Password'
+            return render(request, 'staff_login.html', {'error_message': error_message})
+    else:
+        return render(request, 'staff_login.html')
 
 def parent_login(request):
     if request.method == 'POST':

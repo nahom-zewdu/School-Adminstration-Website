@@ -1,7 +1,7 @@
 from django import forms
-from .models import Grade
+from .models import Subject
 
-class GradeForm(forms.ModelForm):
+class SubjectForm(forms.ModelForm):
     class Meta:
-        model = Grade
+        model = Subject
         fields = '__all__'

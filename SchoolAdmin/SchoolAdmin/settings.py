@@ -122,6 +122,7 @@ AUTHENTICATION_BACKENDS = [
     'base.backends.student_backends.StudentAuthBackend',
     'base.backends.teacher_backends.TeacherAuthBackend',
     'base.backends.parent_backends.ParentAuthBackend',
+    'base.backends.staff_backends.StaffAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
     # Add more custom backends or rearrange the order as needed
 ]

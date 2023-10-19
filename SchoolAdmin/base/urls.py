@@ -12,6 +12,7 @@ urlpatterns = [
     path('restricted/', views.restricted_view, name='restricted'),
     path('student_login/', views.student_login, name='student_login'),
     path('teacher_login/', views.teacher_login, name='teacher_login'),
+    path('staff_login/', views.staff_login, name='staff_login'),
     path('parent_login/', views.parent_login, name='parent_login'),
     path('logout/', views.logout_view, name='logout')
 ]
