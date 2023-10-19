@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect
 from django.urls import reverse
-from .models import Student, Teacher
+from .models import Student, Teacher, Grade
 
 # Create your views here.
 
@@ -15,13 +15,37 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
+
 @login_required(login_url='/restricted/')
 def student_academics(request):
-    return render(request, 'student_academics.html')
+    students = Student.objects.all()
+    grade = Grade.objects.all()
+    female = Student.filter_by_gender('F')
+    male = Student.filter_by_gender('M')
+    context = {
+        'students': students,
+        'grade': grade,
+        'female': female,
+        'male': male,
+    }
+
+    return render(request, 'student_academics.html', context)
+
 
 @login_required(login_url='/restricted/')
 def teacher_academics(request):
-    return render(request, 'teacher_academics.html')
+    teachers = Teacher.objects.all()
+    grade = Grade.objects.all()
+    grade = Grade.objects.all()
+    female = Teacher.filter_by_gender('F')
+    male = Teacher.filter_by_gender('M')
+    context = {
+        'teacher': teacher,
+        'grade': grade,
+        'female': female,
+        'male': male,
+    }
+    return render(request, 'teacher_academics.html', context)
 
 
 def logout_view(request):

@@ -46,10 +46,11 @@
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-
 .sidebar {
   padding: 17px;
-
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
 }
 .sidebar .nav-link {
     color: #fff9f9;

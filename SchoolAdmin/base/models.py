@@ -12,7 +12,7 @@ class Student(models.Model):
         ('M', 'Male'),
         ('F', 'Female')
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Student') # One to one relationship with user model
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Student')
     name = models.CharField(max_length=44, null=True, blank=True)
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     age = models.CharField(max_length=2)
