@@ -6,7 +6,6 @@ import random
 
 
 
-
 class Student(models.Model):
     GENDER_CHOICES = [
         ('M', 'Male'),
@@ -18,7 +17,6 @@ class Student(models.Model):
     age = models.CharField(max_length=2)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
     # grade_7_8 = models.ForeignKey(Grade_7_8, on_delete=models.CASCADE)
-
 
     def save(self, *args, **kwargs):
         if not self.name:
@@ -42,29 +40,6 @@ class Student(models.Model):
 
 
 
-class Grade(models.Model):
-    GRADE_CHOICES = [
-        ('5', 'Grade 5'),
-        ('6', 'Grade 6'),
-        ('7', 'Grade 7'),
-        ('8', 'Grade 8'),
-        ('9', 'Grade 9'),
-        ('10', 'Grade 10'),
-    ]
-    student = models.OneToOneField(Student, on_delete=models.CASCADE)
-    grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
-    physics = models.CharField(max_length=4)
-    chemistry = models.CharField(max_length=4)
-    biology = models.CharField(max_length=4)
-
-    
-    @classmethod
-    def filter_by_grade(cls, grade):
-        return cls.objects.filter(grade=grade) 
-        
-
-    def __str__(self):
-        return self.student.name
 class Teacher(models.Model):
     GRADE_CHOICES = [
         ('5', 'Grade 5'),
@@ -108,6 +83,7 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
 
+
 class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Parent')
     name = models.CharField(max_length=44, null=True, blank=True)
@@ -132,3 +108,46 @@ class Parent(models.Model):
         return self.name
 
 
+class Staff(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=44, null=True, blank=True)
+    staff_id = models.CharField(max_length=6, editable=False, unique=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = self.user.username
+        if not self.staff_id:
+            self.staff_id = self.generate_unique_staff_id()
+        super().save(*args, **kwargs)
+
+    def generate_unique_staff_id(self):
+        while True:
+            staff_id = '21' +  str(random.randint(1000, 9999))
+            if not Staff.objects.filter(staff_id=staff_id).exists():
+                return staff_id
+
+    def __str__(self):
+        return self.name
+        
+
+class Grade(models.Model):
+    GRADE_CHOICES = [
+        ('5', 'Grade 5'),
+        ('6', 'Grade 6'),
+        ('7', 'Grade 7'),
+        ('8', 'Grade 8'),
+        ('9', 'Grade 9'),
+        ('10', 'Grade 10'),
+    ]
+    student = models.OneToOneField(Student, on_delete=models.CASCADE)
+    grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
+    physics = models.CharField(max_length=4)
+    chemistry = models.CharField(max_length=4)
+    biology = models.CharField(max_length=4)
+
+    @classmethod
+    def filter_by_grade(cls, grade):
+        return cls.objects.filter(grade=grade) 
+        
+    def __str__(self):
+        return self.student.name
