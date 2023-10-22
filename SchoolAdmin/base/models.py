@@ -25,7 +25,7 @@ class Student(models.Model):
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
     age = models.CharField(max_length=2)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
-
+    parent_phone = models.CharField(max_length=20, default='Unknown', null=True)
     def save(self, *args, **kwargs):
         if not self.name:
             self.name = self.user.username
@@ -73,6 +73,8 @@ class Teacher(models.Model):
     qualifications = models.CharField(max_length=30)
     experience = models.IntegerField()
     teaches_grade = models.CharField(max_length=2, null=False, blank=False)
+    phone = models.CharField(max_length=20, default='Unknown', null=True)
+
 
     def save(self, *args, **kwargs):
         if not self.name:
@@ -101,7 +103,8 @@ class Parent(models.Model):
     name = models.CharField(max_length=44, null=True, blank=True)
     parent_id = models.CharField(max_length=6, editable=False, unique=True)
     parent_to = models.ManyToManyField(Student)
-    phone_no = models.CharField(max_length=15)
+    phone = models.CharField(max_length=20, default='Unknown', null=True)
+
 
     def save(self, *args, **kwargs):
         if not self.name:
@@ -121,10 +124,18 @@ class Parent(models.Model):
 
 
 class Staff(models.Model):
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female')
+    ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=44, null=True, blank=True)
     staff_id = models.CharField(max_length=6, editable=False, unique=True)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
+    phone = models.CharField(max_length=20, default='Unknown', null=True)
+
     
+
     def save(self, *args, **kwargs):
         if not self.name:
             self.name = self.user.username
