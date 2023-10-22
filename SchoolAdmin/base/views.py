@@ -34,7 +34,7 @@ def dashboard(request):
         'teachers': teachers,
         'students': students,
         'staffs': staffs,
-        
+
         'female_students': female_students,
         'male_students': male_students,
 
@@ -146,6 +146,11 @@ def parent_login(request):
             return render(request, 'login/parent_login.html', {'error_message': error_message})
     else:
         return render(request, 'login/parent_login.html')
+
+
+def student_register(request):
+    return render(request, 'dashboard/student_register.html')
+
 
 def restricted_view(request):
     return render(request, 'base/restricted.html')

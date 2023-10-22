@@ -8,7 +8,6 @@ urlpatterns = [
     path('', views.home, name="home"),
     path('dashboard/', views.dashboard, name="dashboard"),
 
-
     path('student_academics/', views.student_academics, name='student_academics'),
     path('teacher_academics/', views.teacher_academics, name='teacher_academics'),
     
@@ -17,7 +16,9 @@ urlpatterns = [
     path('teacher_login/', views.teacher_login, name='teacher_login'),
     path('staff_login/', views.staff_login, name='staff_login'),
     path('parent_login/', views.parent_login, name='parent_login'),
-    path('logout/', views.logout_view, name='logout')
+    path('logout/', views.logout_view, name='logout'),
+
+    path('student_register/', views.student_register, name='student_register'),
 ]
 
 

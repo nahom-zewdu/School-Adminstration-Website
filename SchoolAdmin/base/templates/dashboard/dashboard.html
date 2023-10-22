@@ -33,7 +33,7 @@
                     <td>{{ students.count }}</td>
                     <td>{{ male_students.count }}</td>
                     <td>{{ female_students.count }}</td>
-                    <td><a href="#" class="btn btn-primary">New Student</a></td>
+                    <td><a href="{% url 'base:student_register' %}" class="btn btn-primary">New Student</a></td>
                 </tr>
                 <tr>
                     <th scope="row">3</th>
@@ -46,6 +46,5 @@
             </tbody>
         </table>
     </div>
-    
 </div>
 {% endblock %}
