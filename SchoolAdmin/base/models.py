@@ -135,6 +135,9 @@ class Staff(models.Model):
     phone = models.CharField(max_length=20, default='Unknown', null=True)
 
     
+    @classmethod
+    def filter_by_gender(cls, gender):
+        return cls.objects.filter(gender=gender) 
 
     def save(self, *args, **kwargs):
         if not self.name:

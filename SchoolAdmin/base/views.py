@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect
 from django.urls import reverse
-from .models import Student, Teacher, Subject
+from .models import Student, Teacher, Subject, Staff
 
 # Create your views here.
 
@@ -19,6 +19,7 @@ def home(request):
 def dashboard(request):
     students = Student.objects.all()
     teachers = Teacher.objects.all()
+    staffs = Staff.objects.all()
     
     female_students = Student.filter_by_gender('F')
     male_students = Student.filter_by_gender('M')
@@ -26,13 +27,22 @@ def dashboard(request):
     female_teachers = Teacher.filter_by_gender('F')
     male_teachers = Teacher.filter_by_gender('M')
     
+    female_staffs = Staff.filter_by_gender('F')
+    male_staffs = Staff.filter_by_gender('M')
+    
     context = {
         'teachers': teachers,
         'students': students,
+        'staffs': staffs,
+        
         'female_students': female_students,
         'male_students': male_students,
+
         'female_teachers': female_teachers,
         'male_teachers': male_teachers,
+
+        'female_staffs': female_staffs,
+        'male_staffs': male_staffs,
     }
     return render(request, 'dashboard/dashboard.html', context)
 
