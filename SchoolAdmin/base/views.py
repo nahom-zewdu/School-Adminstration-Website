@@ -13,7 +13,28 @@ def home(request):
         'teachers': teachers,
         'students': students,
     }
-    return render(request, 'home.html', context)
+    return render(request, 'base/home.html', context)
+
+
+def dashboard(request):
+    students = Student.objects.all()
+    teachers = Teacher.objects.all()
+    
+    female_students = Student.filter_by_gender('F')
+    male_students = Student.filter_by_gender('M')
+
+    female_teachers = Teacher.filter_by_gender('F')
+    male_teachers = Teacher.filter_by_gender('M')
+    
+    context = {
+        'teachers': teachers,
+        'students': students,
+        'female_students': female_students,
+        'male_students': male_students,
+        'female_teachers': female_teachers,
+        'male_teachers': male_teachers,
+    }
+    return render(request, 'dashboard/dashboard.html', context)
 
 
 @login_required(login_url='/restricted/')
@@ -64,9 +85,9 @@ def student_login(request):
             return redirect('base:home')
         else:
             error_message = 'Invalid ID number or Password'
-            return render(request, 'student_login.html', {'error_message': error_message})
+            return render(request, 'login/student_login.html', {'error_message': error_message})
     else:
-        return render(request, 'student_login.html')
+        return render(request, 'login/student_login.html')
 
 
 
@@ -81,9 +102,9 @@ def teacher_login(request):
             return redirect('base:home')
         else:
             error_message = 'Invalid ID number or Password'
-            return render(request, 'teacher_login.html', {'error_message': error_message})
+            return render(request, 'login/teacher_login.html', {'error_message': error_message})
     else:
-        return render(request, 'teacher_login.html')
+        return render(request, 'login/teacher_login.html')
 
 
 def staff_login(request):
@@ -97,9 +118,9 @@ def staff_login(request):
             return redirect('base:home')
         else:
             error_message = 'Invalid ID number or Password'
-            return render(request, 'staff_login.html', {'error_message': error_message})
+            return render(request, 'login/staff_login.html', {'error_message': error_message})
     else:
-        return render(request, 'staff_login.html')
+        return render(request, 'login/staff_login.html')
 
 def parent_login(request):
     if request.method == 'POST':
@@ -112,9 +133,9 @@ def parent_login(request):
             return redirect('base:home')
         else:
             error_message = 'Invalid ID number or Password'
-            return render(request, 'parent_login.html', {'error_message': error_message})
+            return render(request, 'login/parent_login.html', {'error_message': error_message})
     else:
-        return render(request, 'parent_login.html')
+        return render(request, 'login/parent_login.html')
 
 def restricted_view(request):
-    return render(request, 'restricted.html')
+    return render(request, 'base/restricted.html')

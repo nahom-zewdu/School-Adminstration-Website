@@ -1,9 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'base/base.html' %}
 
 {% block title %} Login {% endblock %}
 
 {% block content %}
-
 <div class="container">
     <div class="row justify-content-center">
       <div class="col-9 col-sm-6 col-lg-4 mt-5 cont gradient text-light">
@@ -11,11 +10,11 @@
         {% if error_message %}
             <p>{{error_message}}</p>
         {% endif %}
-        <form method="Post" action="{% url 'base:staff_login' %}">
+        <form method="Post" action="{% url 'base:parent_login' %}">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="text" class="form-label">Staff Id</label>
-                <input type="text" class="form-control" id="text" name="staff_id" placeholder="27****">
+                <label for="text" class="form-label">Parent Id</label>
+                <input type="text" class="form-control" id="text" name="parent_id" placeholder="21****">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
