@@ -162,7 +162,7 @@ def teacher_register(request):
             username = first_name.strip() + '_' + last_name.strip()
 
             if User.objects.filter(username=username).exists():
-                messages.error(request, f'{username} already exists. Please choose a different username.')
+                messages.error(request, f'{username} is already registered. Please choose a different username.')
             else:
                 user = User.objects.create_user(
                     username=username, 
@@ -214,7 +214,7 @@ def student_register(request):
             username = first_name.strip() + '_' + last_name.strip()
 
             if User.objects.filter(username=username).exists():
-                messages.error(request, f'{username} already registered. Please choose a different username.')
+                messages.error(request, f'{username} is already registered. Please choose a different username.')
             else:
                 user = User.objects.create_user(
                     username=username, 
@@ -266,7 +266,7 @@ def parent_register(request):
             username = first_name.strip() + '_' + last_name.strip()
 
             if User.objects.filter(username=username).exists():
-                messages.error(request, f'{username} already registered. Please choose a different username.')
+                messages.error(request, f'{username} is already registered. Please choose a different username.')
             else:
                 user = User.objects.create_user(
                     username=username, 
@@ -300,6 +300,55 @@ def parent_register(request):
     context = {
         'form': form,
         'type': 'parent',
+    }
+    return render(request, 'dashboard/register.html', context)
+
+
+def staff_register(request):
+    if request.method == 'POST':
+        form = StaffCreationForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            username = first_name.strip() + '_' + last_name.strip()
+
+            if User.objects.filter(username=username).exists():
+                messages.error(request, f'{username} is already registered. Please choose a different username.')
+            else:
+                user = User.objects.create_user(
+                    username=username, 
+                    first_name=first_name, 
+                    last_name=last_name,
+                    email=email,
+                    password='@@aa12345',
+                    is_staff=True,
+                )
+                if user:
+                    name = first_name + ' ' + last_name
+                    gender = form.cleaned_data.get('gender')
+                    phone = form.cleaned_data.get('phone')
+                    staff = Staff(
+                        user=user, 
+                        name=name,
+                        gender=gender,
+                        phone=phone,
+                    )
+                    if staff:
+                        staff.save()
+                        messages.success(request, f'{name} is registered successfully!')
+                    else:
+                        user.delete()
+                        messages.error(request, 'Someting went wrong while registering staff')
+
+                return redirect('base:staff_register')
+            
+    else:
+        form = StaffCreationForm()
+
+    context = {
+        'form': form,
+        'type': 'staff',
     }
     return render(request, 'dashboard/register.html', context)
 
