@@ -6,7 +6,7 @@ from django.contrib import messages
 
 from django.contrib.auth.models import User
 from .models import Student, Teacher, Subject, Staff
-from .forms import StudentCreationForm
+from .forms import *
 # Create your views here.
 
 def home(request):
@@ -128,7 +128,7 @@ def staff_login(request):
         user = authenticate(request, staff_id=staff_id, password=password)
         if user:
             login(request, user)
-            return redirect('base:home')
+            return redirect('base:dashboard')
         else:
             error_message = 'Invalid ID number or Password'
             return render(request, 'login/staff_login.html', {'error_message': error_message})
@@ -152,6 +152,54 @@ def parent_login(request):
 
 
 
+def teacher_register(request):
+    if request.method == 'POST':
+        form = TeacherCreationForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            username = first_name.strip() + '_' + last_name.strip()
+
+            if User.objects.filter(username=username).exists():
+                messages.error(request, f'{username} already exists. Please choose a different username.')
+            else:
+                user = User.objects.create_user(
+                    username=username, 
+                    first_name=first_name, 
+                    last_name=last_name,
+                    email=email,
+                    password='@@aa12345',
+                )
+                if user:
+                    name = first_name + ' ' + last_name
+                    gender = form.cleaned_data.get('gender')
+                    department = form.cleaned_data.get('department')
+                    experience = form.cleaned_data.get('experience')
+                    phone = form.cleaned_data.get('phone')
+                    teacher = Teacher(
+                        user=user, 
+                        name=name, 
+                        gender=gender,
+                        department=department, 
+                        experience=experience,
+                        phone=phone,
+                    )
+                    if teacher:
+                        teacher.save()
+                        messages.success(request, f'{name} is registered successfully!')
+                return redirect('base:teacher_register')
+            
+    else:
+        form = TeacherCreationForm()
+
+    context = {
+        'form': form,
+        'type': 'teacher',
+    }
+    return render(request, 'dashboard/register.html', context)
+
+
 def student_register(request):
     if request.method == 'POST':
         form = StudentCreationForm(request.POST)
@@ -162,7 +210,7 @@ def student_register(request):
             username = first_name.strip() + '_' + last_name.strip()
 
             if User.objects.filter(username=username).exists():
-                messages.error(request, 'Username already exists. Please choose a different username.')
+                messages.error(request, f'{username} already registered. Please choose a different username.')
             else:
                 user = User.objects.create_user(
                     username=username, 
@@ -187,18 +235,17 @@ def student_register(request):
                     )
                     if student:
                         student.save()
-                        messages.success(request, 'Student is registered successfully!')
+                        messages.success(request, f'{name} is registered successfully!')
                 return redirect('base:student_register')
-
-                
             
     else:
         form = StudentCreationForm()
 
     context = {
-        'form': form
+        'form': form,
+        'type': 'student',
     }
-    return render(request, 'dashboard/student_register.html', context)
+    return render(request, 'dashboard/register.html', context)
 
 
 def restricted_view(request):

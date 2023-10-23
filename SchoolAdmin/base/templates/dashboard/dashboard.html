@@ -25,7 +25,7 @@
                     <td>{{ teachers.count }}</td>
                     <td>{{ male_teachers.count }}</td>
                     <td>{{ female_teachers.count }}</td>
-                    <td><a href="#" class="btn btn-primary">New Teacher</a></td>
+                    <td><a href="{% url 'base:teacher_register' %}" class="btn btn-primary">New Teacher</a></td>
                 </tr>
                 <tr>
                     <th scope="row">2</th>

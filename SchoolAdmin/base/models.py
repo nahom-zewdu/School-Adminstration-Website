@@ -53,13 +53,11 @@ class Student(models.Model):
 
 
 class Teacher(models.Model):
-    GRADE_CHOICES = [
-        ('5', 'Grade 5'),
-        ('6', 'Grade 6'),
-        ('7', 'Grade 7'),
-        ('8', 'Grade 8'),
-        ('9', 'Grade 9'),
-        ('10', 'Grade 10'),]
+    DEPARTMENT_CHOICES = [
+        ('S', 'Social'),
+        ('N', 'Natural'),
+        ('PE', 'Physical Education'),
+        ]
     GENDER_CHOICES = [
         ('M', 'Male'),
         ('F', 'Female')
@@ -68,12 +66,10 @@ class Teacher(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE, verbose_name='Teacher')
     name = models.CharField(max_length=44, null=True, blank=True)
     teacher_id = models.CharField(max_length=6, editable=False, unique=True)
-    subject = models.CharField(max_length=20, null=False, blank=False)
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
-    qualifications = models.CharField(max_length=30)
-    experience = models.IntegerField()
-    teaches_grade = models.CharField(max_length=2, null=False, blank=False)
-    phone = models.CharField(max_length=20, default='Unknown', null=True)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, blank=False, null=False)
+    department = models.CharField(max_length=20,choices=DEPARTMENT_CHOICES, null=False, blank=False)
+    experience = models.IntegerField(null=True, blank=True)
+    phone = models.CharField(max_length=20, null=False)
 
 
     def save(self, *args, **kwargs):
