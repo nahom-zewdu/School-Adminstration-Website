@@ -8,9 +8,9 @@
 <div class="container p-5">
   <div class="container cont shadow-xlg">
     <div>
-      <h3>Register {{type}}</h3>
+      <h3>Register {{type|title}}</h3>
 
-      <form method="post" action="{% url 'base:{{type}}_register' %}">
+      <form method="post" action="{% url 'base:'|add:type|add:'_register' %}">
         {% csrf_token %}
 
         {% for message in messages %}

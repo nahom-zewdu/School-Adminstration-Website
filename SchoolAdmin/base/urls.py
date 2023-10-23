@@ -20,6 +20,7 @@ urlpatterns = [
 
     path('student_register/', views.student_register, name='student_register'),
     path('teacher_register/', views.teacher_register, name='teacher_register'),
+    path('parent_register/', views.parent_register, name='parent_register'),
 ]
 
 

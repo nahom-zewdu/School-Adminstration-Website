@@ -98,8 +98,8 @@ class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Parent')
     name = models.CharField(max_length=44, null=True, blank=True)
     parent_id = models.CharField(max_length=6, editable=False, unique=True)
-    parent_to = models.ManyToManyField(Student)
-    phone = models.CharField(max_length=20, default='Unknown', null=True)
+    parent_to = models.CharField(max_length=300, blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=False, null=False)
 
 
     def save(self, *args, **kwargs):
@@ -127,8 +127,8 @@ class Staff(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=44, null=True, blank=True)
     staff_id = models.CharField(max_length=6, editable=False, unique=True)
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
-    phone = models.CharField(max_length=20, default='Unknown', null=True)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, null=False, blank=False)
+    phone = models.CharField(max_length=20, null=False, blank=False)
 
     
     @classmethod

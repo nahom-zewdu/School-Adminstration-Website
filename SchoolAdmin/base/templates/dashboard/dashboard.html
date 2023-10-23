@@ -6,6 +6,8 @@
 {% block content %}
 
 <div class="container p-5">
+    <h2 class="p-1">Dashboard</h2>
+    <hr>
     <div class="shadow-xlg">
         <table class="table">
             <thead class="table-primary">
@@ -41,7 +43,15 @@
                     <td>{{ staffs.count }}</td>
                     <td>{{ male_staffs.count }}</td>
                     <td>{{ female_staffs.count }}</td>
-                    <td><a href="#" class="btn btn-primary">New Staff</a></td>
+                    <td><a href="{% url 'base:student_register' %}" class="btn btn-primary">New Staff</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Parents</td>
+                    <td>{{ parents.count }}</td>
+                    <td> - </td>
+                    <td> - </td>
+                    <td><a href="{% url 'base:parent_register' %}" class="btn btn-primary">New Parent</a></td>
                 </tr>
             </tbody>
         </table>

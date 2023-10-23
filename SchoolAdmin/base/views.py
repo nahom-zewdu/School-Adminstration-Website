@@ -188,6 +188,10 @@ def teacher_register(request):
                     if teacher:
                         teacher.save()
                         messages.success(request, f'{name} is registered successfully!')
+                    else:
+                        user.delete()
+                        messages.error(request, 'Someting went wrong while registering Teacher')
+
                 return redirect('base:teacher_register')
             
     else:
@@ -195,7 +199,7 @@ def teacher_register(request):
 
     context = {
         'form': form,
-        'type': 'teacher',
+        'type': 'teacher'
     }
     return render(request, 'dashboard/register.html', context)
 
@@ -236,6 +240,10 @@ def student_register(request):
                     if student:
                         student.save()
                         messages.success(request, f'{name} is registered successfully!')
+                    else:
+                        user.delete()
+                        messages.error(request, 'Someting went wrong while registering Student')
+                        
                 return redirect('base:student_register')
             
     else:
@@ -244,6 +252,54 @@ def student_register(request):
     context = {
         'form': form,
         'type': 'student',
+    }
+    return render(request, 'dashboard/register.html', context)
+
+
+def parent_register(request):
+    if request.method == 'POST':
+        form = ParentCreationForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            username = first_name.strip() + '_' + last_name.strip()
+
+            if User.objects.filter(username=username).exists():
+                messages.error(request, f'{username} already registered. Please choose a different username.')
+            else:
+                user = User.objects.create_user(
+                    username=username, 
+                    first_name=first_name, 
+                    last_name=last_name,
+                    email=email,
+                    password='@@aa12345',
+                )
+                if user:
+                    name = first_name + ' ' + last_name
+                    parent_to = form.cleaned_data.get('parent_to')
+                    phone = form.cleaned_data.get('phone')
+                    parent = Parent(
+                        user=user, 
+                        name=name,
+                        phone=phone,
+                        parent_to=parent_to,
+                    )
+                    if parent:
+                        parent.save()
+                        messages.success(request, f'{name} is registered successfully!')
+                    else:
+                        user.delete()
+                        messages.error(request, 'Someting went wrong while registering parent')
+
+                return redirect('base:parent_register')
+            
+    else:
+        form = ParentCreationForm()
+
+    context = {
+        'form': form,
+        'type': 'parent',
     }
     return render(request, 'dashboard/register.html', context)
 
