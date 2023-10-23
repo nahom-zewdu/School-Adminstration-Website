@@ -23,9 +23,9 @@ class Student(models.Model):
     name = models.CharField(max_length=44, null=True, blank=True)
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
-    age = models.CharField(max_length=2)
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Unknown', null=True)
-    parent_phone = models.CharField(max_length=20, default='Unknown', null=True)
+    age = models.IntegerField(null=False, blank=False)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, null=False, blank=False)
+    parent_phone = models.CharField(max_length=20, null=True)
     def save(self, *args, **kwargs):
         if not self.name:
             self.name = self.user.username
