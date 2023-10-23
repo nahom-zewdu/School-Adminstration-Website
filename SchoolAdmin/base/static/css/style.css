@@ -49,8 +49,9 @@
 .sidebar {
   padding: 17px;
   position: sticky;
-  top: 0;
-  max-height: 100vh;
+  top: 50px;
+  height: calc(100vh - 50px);
+  overflow-y: visible;
 }
 .sidebar .nav-link {
     color: #fff9f9;

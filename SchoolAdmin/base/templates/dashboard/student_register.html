@@ -11,24 +11,20 @@
       <h3>Register Student</h3>
       <form method="post" action="{% url 'base:student_register' %}">
         {% csrf_token %}
-        <label for="first_name">First Name:</label>
-        <input type="text" class="form-control" id="first_name" name="first_name">
-        
-        <label for="last_name">Last Name:</label>
-        <input type="text" class="form-control" id="last_name" name="last_name">
 
-        <label for="grade">Grade:</label>
-        <input type="text" class="form-control" id="grade" name="grade">
+        {% for message in messages %}
+            <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
+        {% endfor %}
 
-        <label for="gender">Gender:</label>
-        <input type="text" class="form-control" id="gender" name="gender">
-
-        <label for="age">Age:</label>
-        <input type="text" class="form-control" id="age" name="age">
-
-        <label for="phone">Parent Phone:</label>
-        <input type="text" class="form-control" id="phone" name="phone">
-
+        {% for field in form %}
+        <label for="{{field.id_for_label}}">{{ field.label }}:</label>
+            {{field}}
+            
+            {% if field.errors %}
+                {{field.errors|join:', '}}
+            {% endif %}
+        {% endfor %}
+    
 
         <button type="submit" class="btn btn-primary">Register</button>
       </form>
