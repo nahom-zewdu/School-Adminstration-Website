@@ -2,8 +2,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect
 from django.urls import reverse
-from .models import Student, Teacher, Subject, Staff
+from django.contrib import messages
 
+from django.contrib.auth.models import User
+from .models import Student, Teacher, Subject, Staff
+from .forms import StudentCreationForm
 # Create your views here.
 
 def home(request):
@@ -148,8 +151,54 @@ def parent_login(request):
         return render(request, 'login/parent_login.html')
 
 
+
 def student_register(request):
-    return render(request, 'dashboard/student_register.html')
+    if request.method == 'POST':
+        form = StudentCreationForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            username = first_name.strip() + '_' + last_name.strip()
+
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Username already exists. Please choose a different username.')
+            else:
+                user = User.objects.create_user(
+                    username=username, 
+                    first_name=first_name, 
+                    last_name=last_name,
+                    email=email,
+                    password='@@aa12345',
+                )
+                if user:
+                    name = first_name + ' ' + last_name
+                    grade = form.cleaned_data.get('grade')
+                    age = form.cleaned_data.get('age')
+                    gender = form.cleaned_data.get('gender')
+                    parent_phone = form.cleaned_data.get('parent_phone')
+                    student = Student(
+                        user=user, 
+                        name=name, 
+                        grade=grade, 
+                        gender=gender,
+                        age=age,
+                        parent_phone=parent_phone,
+                    )
+                    if student:
+                        student.save()
+                        messages.success(request, 'Student is registered successfully!')
+                return redirect('base:student_register')
+
+                
+            
+    else:
+        form = StudentCreationForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'dashboard/student_register.html', context)
 
 
 def restricted_view(request):
