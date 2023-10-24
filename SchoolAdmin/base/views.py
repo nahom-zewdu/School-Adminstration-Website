@@ -389,5 +389,15 @@ def teacher_dashboard(request):
     }
     return render(request, 'dashboard/teacher_dashboard.html', context)
 
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def staff_dashboard(request):
+    staffs = Staff.objects.all()
+    context = {
+        'staffs': staffs,
+    }
+    return render(request, 'dashboard/staff_dashboard.html', context)
+
 def restricted_view(request):
     return render(request, 'base/restricted.html')

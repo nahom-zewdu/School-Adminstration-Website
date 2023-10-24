@@ -27,7 +27,7 @@
             <tbody>
                 {% for teacher in teachers %}
                     <tr class="dashboard-row">
-                        <th scope="row">1</th>
+                        <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ teacher.name }}</td>
                         <td>{{ teacher.teacher_id }}</td>
                         <td>{{ teacher.gender }}</td>
