@@ -349,6 +349,8 @@ def staff_register(request):
                     if staff:
                         staff.save()
                         messages.success(request, f'{name} is registered successfully!')
+                        
+                        return redirect('base:dashboard')
                     else:
                         user.delete()
                         messages.error(request, 'Someting went wrong while registering staff')

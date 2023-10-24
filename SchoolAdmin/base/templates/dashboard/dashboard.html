@@ -9,6 +9,9 @@
     <h2 class="p-1">Dashboard</h2>
     <hr>
     <div class="shadow-xlg">
+        {% for message in messages %}
+            <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
+        {% endfor %}
         <table class="table">
             <thead class="table-primary">
             <tr>
