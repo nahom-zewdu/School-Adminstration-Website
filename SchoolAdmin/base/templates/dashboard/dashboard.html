@@ -24,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr class="dashboard-row">
+                <tr class="dashboard-row" href="{% url 'base:teacher_register' %}">
                     <th scope="row">1</th>
                     <td>Teachers</td>
                     <td>{{ teachers.count }}</td>
@@ -32,15 +32,15 @@
                     <td>{{ female_teachers.count }}</td>
                     <td><a href="{% url 'base:teacher_register' %}" class="btn btn-primary">New Teacher</a></td>
                 </tr>
-                <tr class="dashboard-row">
+                <tr class="dashboard-row" href="{% url 'base:student_dashboard' %}">
                     <th scope="row">2</th>
                     <td>Students</td>
                     <td>{{ students.count }}</td>
                     <td>{{ male_students.count }}</td>
                     <td>{{ female_students.count }}</td>
-                    <td><a href="{% url 'base:student_register' %}" class="btn btn-primary">New Student</a></td>
+                    <td><a href="{% url 'base:student_dashboard' %}" class="btn btn-primary">View</a></td>
                 </tr>
-                <tr class="dashboard-row">
+                <tr class="dashboard-row" href="{% url 'base:staff_register' %}">
                     <th scope="row">3</th>
                     <td>Staffs</td>
                     <td>{{ staffs.count }}</td>
@@ -48,7 +48,7 @@
                     <td>{{ female_staffs.count }}</td>
                     <td><a href="{% url 'base:staff_register' %}" class="btn btn-primary">New Staff</a></td>
                 </tr>
-                <tr class="dashboard-row">
+                <tr class="dashboard-row" href="{% url 'base:parent_register' %}">
                     <th scope="row">4</th>
                     <td>Parents</td>
                     <td>{{ parents.count }}</td>
@@ -60,4 +60,16 @@
         </table>
     </div>
 </div>
+
+
+
+<script>
+    const rows = document.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        row.addEventListener('click', () => {
+            window.location.href = row.getAttribute('href');
+        });
+    });
+</script>
 {% endblock %}
