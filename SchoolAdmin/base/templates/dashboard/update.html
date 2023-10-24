@@ -23,8 +23,8 @@
         <label for="id_last_name">last Name:</label>
         <input type="text" name="last_name" value="{{user_update.last_name}}" class="form-control" placeholder="{{user_update.last_name}}" required="" id="id_last_name">
         
-        <label for="id_email">First Name:</label>
-        <input type="text" name="email" value="{{user_update.email}}" class="form-control" placeholder="{{user_update.email}}" required="" id="id_email">
+        <label for="id_email">Email:</label>
+        <input type="email" name="email" value="{{user_update.email}}" class="form-control" placeholder="{{user_update.email}}" required="" id="id_email">
       
 
         {% for field in form %}

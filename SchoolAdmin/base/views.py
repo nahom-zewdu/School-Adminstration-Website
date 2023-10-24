@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib import messages
 
 from django.contrib.auth.models import User
-from .models import Student, Teacher, Subject, Staff
+from .models import *
 from .forms import *
 # Create your views here.
 
@@ -447,6 +447,50 @@ def student_update(request, pk):
         'form': form,
         'type': 'student',
         'id': student.student_id,
+        'user_update': user_update,
+        'exclude': exclude,
+    }
+
+    return render(request, 'dashboard/update.html', context)
+
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def teacher_update(request, pk):
+    teacher = get_object_or_404(Teacher, teacher_id=pk)
+    user_update = teacher.user
+    if request.method == 'POST':
+        form = TeacherCreationForm(request.POST, instance=teacher)
+        if form.is_valid():
+            user_update.first_name = form.cleaned_data['first_name']
+            user_update.last_name = form.cleaned_data['last_name']
+            user_update.email = form.cleaned_data['email']
+            user_update.username = user_update.first_name.strip() + '_' + user_update.last_name.strip()
+             
+            user_update.save()
+            if user_update:
+                teacher.name = user_update.first_name + ' ' + user_update.last_name
+                teacher.gender = form.cleaned_data['gender']
+                teacher.department = form.cleaned_data['department']
+                teacher.experience = form.cleaned_data['experience']
+                teacher.phone = form.cleaned_data['phone']
+                teacher.save()
+                if teacher:
+                    messages.success(request, 'Teacher is updated successfully!')
+                    return redirect('base:teacher_dashboard')
+                else:
+                    messages.error(request, 'Error occured while updating teacher!')
+                    return redirect('base:teacher_update')
+
+            
+    else:
+        form = TeacherCreationForm(instance=teacher)
+    
+    exclude = ['first_name', 'last_name', 'email']
+    context = {
+        'form': form,
+        'type': 'teacher',
+        'id': teacher.teacher_id,
         'user_update': user_update,
         'exclude': exclude,
     }
