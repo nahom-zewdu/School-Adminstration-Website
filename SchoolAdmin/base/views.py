@@ -9,6 +9,7 @@ from .models import Student, Teacher, Subject, Staff
 from .forms import *
 # Create your views here.
 
+# base views section
 def home(request):
     students = Student.objects.all()
     teachers = Teacher.objects.all()
@@ -17,39 +18,6 @@ def home(request):
         'students': students,
     }
     return render(request, 'base/home.html', context)
-
-
-@login_required
-@user_passes_test(lambda user: user.is_staff)
-def dashboard(request):
-    students = Student.objects.all()
-    teachers = Teacher.objects.all()
-    staffs = Staff.objects.all()
-    
-    female_students = Student.filter_by_gender('F')
-    male_students = Student.filter_by_gender('M')
-
-    female_teachers = Teacher.filter_by_gender('F')
-    male_teachers = Teacher.filter_by_gender('M')
-    
-    female_staffs = Staff.filter_by_gender('F')
-    male_staffs = Staff.filter_by_gender('M')
-    
-    context = {
-        'teachers': teachers,
-        'students': students,
-        'staffs': staffs,
-
-        'female_students': female_students,
-        'male_students': male_students,
-
-        'female_teachers': female_teachers,
-        'male_teachers': male_teachers,
-
-        'female_staffs': female_staffs,
-        'male_staffs': male_staffs,
-    }
-    return render(request, 'dashboard/dashboard.html', context)
 
 
 @login_required(login_url='/restricted/')
@@ -67,7 +35,6 @@ def student_academics(request):
 
     return render(request, 'student_academics.html', context)
 
-
 @login_required(login_url='/restricted/')
 def teacher_academics(request):
     teachers = Teacher.objects.all()
@@ -83,11 +50,12 @@ def teacher_academics(request):
     return render(request, 'teacher_academics.html', context)
 
 
+
+# Authentication views section
 def logout_view(request):
     logout(request)
 
     return HttpResponsePermanentRedirect(reverse('base:home'))
-
 
 def student_login(request):
     if request.method == 'POST':
@@ -104,8 +72,6 @@ def student_login(request):
     else:
         return render(request, 'login/student_login.html')
 
-
-
 def teacher_login(request):
     if request.method == 'POST':
         teacher_id = request.POST['teacher_id']
@@ -120,7 +86,6 @@ def teacher_login(request):
             return render(request, 'login/teacher_login.html', {'error_message': error_message})
     else:
         return render(request, 'login/teacher_login.html')
-
 
 def staff_login(request):
     if request.method == 'POST':
@@ -154,6 +119,43 @@ def parent_login(request):
             return render(request, 'login/parent_login.html', {'error_message': error_message})
     else:
         return render(request, 'login/parent_login.html')
+
+
+
+# Dashboard Views section
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def dashboard(request):
+    students = Student.objects.all()
+    teachers = Teacher.objects.all()
+    staffs = Staff.objects.all()
+    parents = Parent.objects.all()
+
+    female_students = Student.filter_by_gender('F')
+    male_students = Student.filter_by_gender('M')
+
+    female_teachers = Teacher.filter_by_gender('F')
+    male_teachers = Teacher.filter_by_gender('M')
+    
+    female_staffs = Staff.filter_by_gender('F')
+    male_staffs = Staff.filter_by_gender('M')
+    
+    context = {
+        'teachers': teachers,
+        'students': students,
+        'staffs': staffs,
+        'parents': parents,
+
+        'female_students': female_students,
+        'male_students': male_students,
+
+        'female_teachers': female_teachers,
+        'male_teachers': male_teachers,
+
+        'female_staffs': female_staffs,
+        'male_staffs': male_staffs,
+    }
+    return render(request, 'dashboard/dashboard.html', context)
 
 
 @login_required
@@ -289,13 +291,11 @@ def parent_register(request):
                 )
                 if user:
                     name = first_name + ' ' + last_name
-                    parent_to = form.cleaned_data.get('parent_to')
                     phone = form.cleaned_data.get('phone')
                     parent = Parent(
                         user=user, 
                         name=name,
                         phone=phone,
-                        parent_to=parent_to,
                     )
                     if parent:
                         parent.save()
@@ -399,5 +399,17 @@ def staff_dashboard(request):
     }
     return render(request, 'dashboard/staff_dashboard.html', context)
 
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def parent_dashboard(request):
+    parents = Parent.objects.all()
+    context = {
+        'parents': parents,
+    }
+    return render(request, 'dashboard/parent_dashboard.html', context)
+
+
+
+# restriction redirect veiw
 def restricted_view(request):
     return render(request, 'base/restricted.html')
