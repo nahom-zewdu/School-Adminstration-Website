@@ -12,6 +12,9 @@
     </div>
     <hr>
     <div class="shadow-xlg">
+        {% for message in messages %}
+            <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
+        {% endfor %}
         <table class="table">
             <thead class="table-primary">
             <tr>
@@ -24,7 +27,7 @@
             </thead>
             <tbody>
                 {% for staff in staffs %}
-                    <tr class="dashboard-row">
+                    <tr class="dashboard-row"  href="{% url 'base:staff_update' staff.staff_id %}">
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ staff.name }}</td>
                         <td>{{ staff.staff_id }}</td>

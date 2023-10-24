@@ -12,6 +12,9 @@
     </div>
     <hr>
     <div class="shadow-xlg">
+        {% for message in messages %}
+            <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
+        {% endfor %}
         <table class="table">
             <thead class="table-primary">
             <tr>
@@ -23,7 +26,7 @@
             </thead>
             <tbody>
                 {% for parent in parents %}
-                    <tr class="dashboard-row">
+                    <tr class="dashboard-row"  href="{% url 'base:parent_update' parent.parent_id %}">
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ parent.name }}</td>
                         <td>{{ parent.parent_id }}</td>
@@ -34,4 +37,15 @@
         </table>
     </div>
 </div>
+
+
+<script>
+    const rows = document.querySelectorAll('tr');
+
+    rows.forEach(row => {
+        row.addEventListener('click', () => {
+            window.location.href = row.getAttribute('href');
+        });
+    });
+</script>
 {% endblock %}

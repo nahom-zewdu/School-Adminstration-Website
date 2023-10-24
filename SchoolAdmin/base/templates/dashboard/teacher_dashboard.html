@@ -4,7 +4,7 @@
 {% block title %} MTA School {% endblock %}
 
 {% block content %}
-
+ 
 <div class="container p-5">
     <div class="row">
         <h2 class="p-1 col-8">Teachers of MTA</h2>
@@ -12,6 +12,9 @@
     </div>
     <hr>
     <div class="shadow-xlg">
+        {% for message in messages %}
+            <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
+        {% endfor %}
         <table class="table">
             <thead class="table-primary">
             <tr>
@@ -26,7 +29,7 @@
             </thead>
             <tbody>
                 {% for teacher in teachers %}
-                    <tr class="dashboard-row">
+                    <tr class="dashboard-row"  href="{% url 'base:teacher_update' teacher.teacher_id %}">
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ teacher.name }}</td>
                         <td>{{ teacher.teacher_id }}</td>
