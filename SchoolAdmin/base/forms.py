@@ -80,7 +80,7 @@ class StaffCreationForm(forms.ModelForm):
 
 
 
-class SubjectForm(forms.ModelForm):
+class ScoreForm(forms.ModelForm):
     class Meta:
-        model = Subject
+        model = Score
         fields = '__all__'

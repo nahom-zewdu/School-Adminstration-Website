@@ -161,11 +161,19 @@ class Staff(models.Model):
         return self.name
         
 
-class Subject(models.Model):
-    student = models.OneToOneField(Student, on_delete=models.CASCADE)
-    physics = models.CharField(max_length=4)
-    chemistry = models.CharField(max_length=4)
-    biology = models.CharField(max_length=4)
-        
+class Score(models.Model):
+    SEMESTER_CHOICE =[
+        ('First Semester', '1st'),
+        ('Second Semester', '2nd')
+    ]
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name=scores)
+    semester = models.CharField(max_length=30, choices=SEMESTER_CHOICE, null=False, blank=False)
+    physics = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    chemistry = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    biology = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    average = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)
+    rank = models.IntegerField(null=False, blank=False)
+    
+    
     def __str__(self):
-        return self.student.name
+        return str(self.rank)
