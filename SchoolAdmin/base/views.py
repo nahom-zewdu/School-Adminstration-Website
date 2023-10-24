@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect
+from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
 
@@ -408,6 +408,50 @@ def parent_dashboard(request):
     }
     return render(request, 'dashboard/parent_dashboard.html', context)
 
+
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def student_update(request, pk):
+    student = get_object_or_404(Student, student_id=pk)
+    user_update = student.user
+    if request.method == 'POST':
+        form = StudentCreationForm(request.POST, instance=student)
+        if form.is_valid():
+            user_update.first_name = form.cleaned_data['first_name']
+            user_update.last_name = form.cleaned_data['last_name']
+            user_update.email = form.cleaned_data['email']
+            user_update.username = user_update.first_name.strip() + '_' + user_update.last_name.strip()
+             
+            user_update.save()
+            if user_update:
+                student.name = user_update.first_name + ' ' + user_update.last_name
+                student.grade = form.cleaned_data['grade']
+                student.age = form.cleaned_data['age']
+                student.gender = form.cleaned_data['gender']
+                student.parent_phone = form.cleaned_data['parent_phone']
+                student.save()
+                if student:
+                    messages.success(request, 'Student is updated successfully!')
+                    return redirect('base:student_dashboard')
+                else:
+                    messages.error(request, 'Error occured while updating student!')
+                    return redirect('base:student_update')
+
+            
+    else:
+        form = StudentCreationForm(instance=student)
+    
+    exclude = ['first_name', 'last_name', 'email']
+    context = {
+        'form': form,
+        'type': 'student',
+        'id': student.student_id,
+        'user_update': user_update,
+        'exclude': exclude,
+    }
+
+    return render(request, 'dashboard/update.html', context)
 
 
 # restriction redirect veiw
