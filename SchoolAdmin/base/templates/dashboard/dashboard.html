@@ -20,17 +20,15 @@
                 <th scope="col">All</th>
                 <th scope="col">Males</th>
                 <th scope="col">Females</th>
-                <th scope="col">Register</th>
             </tr>
             </thead>
             <tbody>
-                <tr class="dashboard-row" href="{% url 'base:teacher_register' %}">
+                <tr class="dashboard-row" href="{% url 'base:teacher_dashboard' %}">
                     <th scope="row">1</th>
                     <td>Teachers</td>
                     <td>{{ teachers.count }}</td>
                     <td>{{ male_teachers.count }}</td>
                     <td>{{ female_teachers.count }}</td>
-                    <td><a href="{% url 'base:teacher_register' %}" class="btn btn-primary">New Teacher</a></td>
                 </tr>
                 <tr class="dashboard-row" href="{% url 'base:student_dashboard' %}">
                     <th scope="row">2</th>
@@ -38,7 +36,6 @@
                     <td>{{ students.count }}</td>
                     <td>{{ male_students.count }}</td>
                     <td>{{ female_students.count }}</td>
-                    <td><a href="{% url 'base:student_dashboard' %}" class="btn btn-primary">View</a></td>
                 </tr>
                 <tr class="dashboard-row" href="{% url 'base:staff_register' %}">
                     <th scope="row">3</th>
@@ -46,7 +43,6 @@
                     <td>{{ staffs.count }}</td>
                     <td>{{ male_staffs.count }}</td>
                     <td>{{ female_staffs.count }}</td>
-                    <td><a href="{% url 'base:staff_register' %}" class="btn btn-primary">New Staff</a></td>
                 </tr>
                 <tr class="dashboard-row" href="{% url 'base:parent_register' %}">
                     <th scope="row">4</th>
@@ -54,7 +50,6 @@
                     <td>{{ parents.count }}</td>
                     <td> - </td>
                     <td> - </td>
-                    <td><a href="{% url 'base:parent_register' %}" class="btn btn-primary">New Parent</a></td>
                 </tr>
             </tbody>
         </table>

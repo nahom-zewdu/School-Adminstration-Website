@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} MTA School {% endblock %}
+
+{% block content %}
+
+<div class="container p-5">
+    <div class="row">
+        <h2 class="p-1 col-8">Teachers of MTA</h2>
+        <a href="{% url 'base:teacher_register' %}" class="col-4 btn btn-primary">Register New Teacher</a>
+    </div>
+    <hr>
+    <div class="shadow-xlg">
+        <table class="table">
+            <thead class="table-primary">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Teacher Id</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Department</th>
+                <th scope="col">experience</th>
+                <th scope="col">Phone</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for teacher in teachers %}
+                    <tr class="dashboard-row">
+                        <th scope="row">1</th>
+                        <td>{{ teacher.name }}</td>
+                        <td>{{ teacher.teacher_id }}</td>
+                        <td>{{ teacher.gender }}</td>
+                        <td>{{ teacher.department }}</td>
+                        <td>{{ teacher.experience }}</td>
+                        <td>{{ teacher.phone }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
