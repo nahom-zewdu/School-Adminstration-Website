@@ -54,9 +54,9 @@ class Student(models.Model):
 
 class Teacher(models.Model):
     DEPARTMENT_CHOICES = [
-        ('S', 'Social'),
-        ('N', 'Natural'),
-        ('PE', 'Physical Education'),
+        ('Social Studies', 'Social' ),
+        ('Natural Science', 'Natural'),
+        ('Physical Education', 'Sport'),
         ]
     GENDER_CHOICES = [
         ('M', 'Male'),

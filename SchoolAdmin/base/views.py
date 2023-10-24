@@ -389,6 +389,5 @@ def teacher_dashboard(request):
     }
     return render(request, 'dashboard/teacher_dashboard.html', context)
 
-
 def restricted_view(request):
     return render(request, 'base/restricted.html')
