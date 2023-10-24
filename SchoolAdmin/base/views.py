@@ -194,6 +194,7 @@ def teacher_register(request):
                     if teacher:
                         teacher.save()
                         messages.success(request, f'{name} is registered successfully!')
+                        return redirect('base:dashboard')
                     else:
                         user.delete()
                         messages.error(request, 'Someting went wrong while registering Teacher')
@@ -248,6 +249,7 @@ def student_register(request):
                     if student:
                         student.save()
                         messages.success(request, f'{name} is registered successfully!')
+                        return redirect('base:dashboard')
                     else:
                         user.delete()
                         messages.error(request, 'Someting went wrong while registering Student')
@@ -298,6 +300,7 @@ def parent_register(request):
                     if parent:
                         parent.save()
                         messages.success(request, f'{name} is registered successfully!')
+                        return redirect('base:dashboard')
                     else:
                         user.delete()
                         messages.error(request, 'Someting went wrong while registering parent')
@@ -349,7 +352,6 @@ def staff_register(request):
                     if staff:
                         staff.save()
                         messages.success(request, f'{name} is registered successfully!')
-                        
                         return redirect('base:dashboard')
                     else:
                         user.delete()

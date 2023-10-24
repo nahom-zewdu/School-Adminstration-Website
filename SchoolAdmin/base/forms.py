@@ -8,8 +8,10 @@ class StudentCreationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-            visible.field.widget.attrs['placeholder'] = visible.field.label
+            visible.field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': visible.field.label,
+            })
 
     first_name = forms.CharField(label='First Name', max_length=20, required=True)
     last_name = forms.CharField(label='Last Name', max_length=20, required=True)
@@ -24,8 +26,10 @@ class TeacherCreationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-            visible.field.widget.attrs['placeholder'] = visible.field.label
+            visible.field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': visible.field.label,
+            })
 
     first_name = forms.CharField(label='First Name', max_length=20, required=True)
     last_name = forms.CharField(label='Last Name', max_length=20, required=True)
@@ -41,8 +45,10 @@ class ParentCreationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-            visible.field.widget.attrs['placeholder'] = visible.field.label
+            visible.field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': visible.field.label,
+            })
 
     first_name = forms.CharField(label='First Name', max_length=20, required=True)
     last_name = forms.CharField(label='Last Name', max_length=20, required=True)
@@ -58,9 +64,11 @@ class StaffCreationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-            visible.field.widget.attrs['placeholder'] = visible.field.label
-
+            visible.field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': visible.field.label,
+            })
+            
     first_name = forms.CharField(label='First Name', max_length=20, required=True)
     last_name = forms.CharField(label='Last Name', max_length=20, required=True)
     email = forms.EmailField(label='Email', required=False)
