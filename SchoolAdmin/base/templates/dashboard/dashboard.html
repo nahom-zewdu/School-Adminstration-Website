@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr class="dashboard-row">
                     <th scope="row">1</th>
                     <td>Teachers</td>
                     <td>{{ teachers.count }}</td>
@@ -29,7 +29,7 @@
                     <td>{{ female_teachers.count }}</td>
                     <td><a href="{% url 'base:teacher_register' %}" class="btn btn-primary">New Teacher</a></td>
                 </tr>
-                <tr>
+                <tr class="dashboard-row">
                     <th scope="row">2</th>
                     <td>Students</td>
                     <td>{{ students.count }}</td>
@@ -37,7 +37,7 @@
                     <td>{{ female_students.count }}</td>
                     <td><a href="{% url 'base:student_register' %}" class="btn btn-primary">New Student</a></td>
                 </tr>
-                <tr>
+                <tr class="dashboard-row">
                     <th scope="row">3</th>
                     <td>Staffs</td>
                     <td>{{ staffs.count }}</td>
@@ -45,8 +45,8 @@
                     <td>{{ female_staffs.count }}</td>
                     <td><a href="{% url 'base:staff_register' %}" class="btn btn-primary">New Staff</a></td>
                 </tr>
-                <tr>
-                    <th scope="row">3</th>
+                <tr class="dashboard-row">
+                    <th scope="row">4</th>
                     <td>Parents</td>
                     <td>{{ parents.count }}</td>
                     <td> - </td>
