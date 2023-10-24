@@ -27,6 +27,12 @@ urlpatterns = [
     path('teacher_dashboard/', views.teacher_dashboard, name='teacher_dashboard'),
     path('staff_dashboard/', views.staff_dashboard, name='staff_dashboard'),
     path('parent_dashboard/', views.parent_dashboard, name='parent_dashboard'),
+
+    path('student_update/<str:pk>', views.student_update, name='student_update'),
+    # path('teacher_update/<str:pk>', views.teacher_update, name='teacher_update'),
+    # path('parent_update/<str:pk>', views.parent_update, name='parent_update'),
+    # path('staff_update/<str:pk>', views.staff_update, name='staff_update'),
+
 ]
 
 
