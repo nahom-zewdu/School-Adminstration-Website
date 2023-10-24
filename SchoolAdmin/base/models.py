@@ -98,7 +98,6 @@ class Parent(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Parent')
     name = models.CharField(max_length=44, null=True, blank=True)
     parent_id = models.CharField(max_length=6, editable=False, unique=True)
-    parent_to = models.CharField(max_length=300, blank=True, null=True)
     phone = models.CharField(max_length=20, blank=False, null=False)
 
 

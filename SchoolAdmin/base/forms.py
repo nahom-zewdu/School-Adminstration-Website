@@ -56,7 +56,7 @@ class ParentCreationForm(forms.ModelForm):
 
     class Meta:
         model = Parent
-        fields = ['first_name', 'last_name', 'email', 'parent_to', 'phone']
+        fields = ['first_name', 'last_name', 'email', 'phone']
 
 
 class StaffCreationForm(forms.ModelForm):
@@ -68,7 +68,7 @@ class StaffCreationForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': visible.field.label,
             })
-            
+
     first_name = forms.CharField(label='First Name', max_length=20, required=True)
     last_name = forms.CharField(label='Last Name', max_length=20, required=True)
     email = forms.EmailField(label='Email', required=False)
