@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect
 from django.urls import reverse
 from django.contrib import messages
@@ -19,6 +19,8 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
+@login_required
+@user_passes_test(lambda user: user.is_staff)
 def dashboard(request):
     students = Student.objects.all()
     teachers = Teacher.objects.all()
@@ -128,7 +130,10 @@ def staff_login(request):
         user = authenticate(request, staff_id=staff_id, password=password)
         if user:
             login(request, user)
-            return redirect('base:dashboard')
+            if user.is_staff:
+                return redirect('base:dashboard')
+            else:
+                return redirect('base:home')
         else:
             error_message = 'Invalid ID number or Password'
             return render(request, 'login/staff_login.html', {'error_message': error_message})
@@ -151,7 +156,8 @@ def parent_login(request):
         return render(request, 'login/parent_login.html')
 
 
-
+@login_required
+@user_passes_test(lambda user: user.is_staff)
 def teacher_register(request):
     if request.method == 'POST':
         form = TeacherCreationForm(request.POST)
@@ -204,6 +210,8 @@ def teacher_register(request):
     return render(request, 'dashboard/register.html', context)
 
 
+@login_required
+@user_passes_test(lambda user: user.is_staff)
 def student_register(request):
     if request.method == 'POST':
         form = StudentCreationForm(request.POST)
@@ -256,6 +264,8 @@ def student_register(request):
     return render(request, 'dashboard/register.html', context)
 
 
+@login_required
+@user_passes_test(lambda user: user.is_staff)
 def parent_register(request):
     if request.method == 'POST':
         form = ParentCreationForm(request.POST)
@@ -304,6 +314,8 @@ def parent_register(request):
     return render(request, 'dashboard/register.html', context)
 
 
+@login_required
+@user_passes_test(lambda user: user.is_staff)
 def staff_register(request):
     if request.method == 'POST':
         form = StaffCreationForm(request.POST)
