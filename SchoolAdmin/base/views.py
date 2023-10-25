@@ -13,10 +13,32 @@ from .forms import *
 def home(request):
     students = Student.objects.all()
     teachers = Teacher.objects.all()
+    staffs = Staff.objects.all()
+
+    female_students = Student.filter_by_gender('F')
+    male_students = Student.filter_by_gender('M')
+
+    female_teachers = Teacher.filter_by_gender('F')
+    male_teachers = Teacher.filter_by_gender('M')
+    
+    female_staffs = Staff.filter_by_gender('F')
+    male_staffs = Staff.filter_by_gender('M')
+    
     context = {
         'teachers': teachers,
         'students': students,
+        'staffs': staffs,
+
+        'female_students': female_students,
+        'male_students': male_students,
+
+        'female_teachers': female_teachers,
+        'male_teachers': male_teachers,
+
+        'female_staffs': female_staffs,
+        'male_staffs': male_staffs,
     }
+    
     return render(request, 'base/home.html', context)
 
 
@@ -167,7 +189,7 @@ def teacher_register(request):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
-            username = first_name.strip() + '_' + last_name.strip()
+            username = first_name.strip().lower() + '_' + last_name.strip().lower()
 
             if User.objects.filter(username=username).exists():
                 messages.error(request, f'{username} is already registered. Please choose a different username.')
@@ -222,7 +244,7 @@ def student_register(request):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
-            username = first_name.strip() + '_' + last_name.strip()
+            username = first_name.strip().lower() + '_' + last_name.strip().lower()
 
             if User.objects.filter(username=username).exists():
                 messages.error(request, f'{username} is already registered. Please choose a different username.')
@@ -277,7 +299,7 @@ def parent_register(request):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
-            username = first_name.strip() + '_' + last_name.strip()
+            username = first_name.strip().lower() + '_' + last_name.strip().lower()
 
             if User.objects.filter(username=username).exists():
                 messages.error(request, f'{username} is already registered. Please choose a different username.')
@@ -326,7 +348,7 @@ def staff_register(request):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
-            username = first_name.strip() + '_' + last_name.strip()
+            username = first_name.strip().lower() + '_' + last_name.strip().lower()
 
             if User.objects.filter(username=username).exists():
                 messages.error(request, f'{username} is already registered. Please choose a different username.')
@@ -421,7 +443,7 @@ def student_update(request, pk):
             user_update.first_name = form.cleaned_data['first_name']
             user_update.last_name = form.cleaned_data['last_name']
             user_update.email = form.cleaned_data['email']
-            user_update.username = user_update.first_name.strip() + '_' + user_update.last_name.strip()
+            user_update.username = user_update.first_name.strip().lower() + '_' + user_update.last_name.strip().lower()
              
             user_update.save()
             if user_update:
@@ -465,7 +487,7 @@ def teacher_update(request, pk):
             user_update.first_name = form.cleaned_data['first_name']
             user_update.last_name = form.cleaned_data['last_name']
             user_update.email = form.cleaned_data['email']
-            user_update.username = user_update.first_name.strip() + '_' + user_update.last_name.strip()
+            user_update.username = user_update.first_name.strip().lower() + '_' + user_update.last_name.strip().lower()
              
             user_update.save()
             if user_update:
@@ -497,6 +519,89 @@ def teacher_update(request, pk):
 
     return render(request, 'dashboard/update.html', context)
 
+
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def parent_update(request, pk):
+    parent = get_object_or_404(Parent, parent_id=pk)
+    user_update = parent.user
+    if request.method == 'POST':
+        form = ParentCreationForm(request.POST, instance=parent)
+        if form.is_valid():
+            user_update.first_name = form.cleaned_data['first_name']
+            user_update.last_name = form.cleaned_data['last_name']
+            user_update.email = form.cleaned_data['email']
+            user_update.username = user_update.first_name.strip().lower() + '_' + user_update.last_name.strip().lower()
+             
+            user_update.save()
+            if user_update:
+                parent.name = user_update.first_name + ' ' + user_update.last_name
+                parent.phone = form.cleaned_data['phone']
+                parent.save()
+                if parent:
+                    messages.success(request, 'Parent is updated successfully!')
+                    return redirect('base:parent_dashboard')
+                else:
+                    messages.error(request, 'Error occured while updating Parent!')
+                    return redirect('base:parent_update')
+
+            
+    else:
+        form = ParentCreationForm(instance=parent)
+    
+    exclude = ['first_name', 'last_name', 'email']
+    context = {
+        'form': form,
+        'type': 'parent',
+        'id': parent.parent_id,
+        'user_update': user_update,
+        'exclude': exclude,
+    }
+
+    return render(request, 'dashboard/update.html', context)
+
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def staff_update(request, pk):
+    staff = get_object_or_404(Staff, staff_id=pk)
+    user_update = staff.user
+    if request.method == 'POST':
+        form = StaffCreationForm(request.POST, instance=staff)
+        if form.is_valid():
+            user_update.first_name = form.cleaned_data['first_name']
+            user_update.last_name = form.cleaned_data['last_name']
+            user_update.email = form.cleaned_data['email']
+            user_update.username = user_update.first_name.strip().lower() + '_' + user_update.last_name.strip().lower()
+             
+            user_update.save()
+            if user_update:
+                staff.name = user_update.first_name + ' ' + user_update.last_name
+                staff.gender = form.cleaned_data['gender']
+                staff.phone = form.cleaned_data['phone']
+                staff.save()
+                if staff:
+                    messages.success(request, 'staff is updated successfully!')
+                    return redirect('base:staff_dashboard')
+                else:
+                    messages.error(request, 'Error occured while updating staff!')
+                    return redirect('base:staff_update')
+
+            
+    else:
+        form = StaffCreationForm(instance=staff)
+    
+    exclude = ['first_name', 'last_name', 'email']
+    context = {
+        'form': form,
+        'type': 'staff',
+        'id': staff.staff_id,
+        'user_update': user_update,
+        'exclude': exclude,
+    }
+
+    return render(request, 'dashboard/update.html', context)
 
 # restriction redirect veiw
 def restricted_view(request):

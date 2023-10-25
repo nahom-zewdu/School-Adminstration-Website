@@ -2,12 +2,15 @@
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
+console.log(staff)
 
-// this code makes the rows of a table clickale
-const rows = document.querySelectorAll('tr');
+if( staff === 'True'){
+    // this code makes the rows of a table clickale
+    const rows = document.querySelectorAll('tr');
 
-rows.forEach(row => {
-    row.addEventListener('click', () => {
-        window.location.href = row.getAttribute('href');
+    rows.forEach(row => {
+        row.addEventListener('click', () => {
+            window.location.href = row.getAttribute('href');
+        });
     });
-});
+};

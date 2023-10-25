@@ -30,8 +30,8 @@ urlpatterns = [
 
     path('student_update/<str:pk>', views.student_update, name='student_update'),
     path('teacher_update/<str:pk>', views.teacher_update, name='teacher_update'),
-    # path('parent_update/<str:pk>', views.parent_update, name='parent_update'),
-    # path('staff_update/<str:pk>', views.staff_update, name='staff_update'),
+    path('parent_update/<str:pk>', views.parent_update, name='parent_update'),
+    path('staff_update/<str:pk>', views.staff_update, name='staff_update'),
 
 ]
 

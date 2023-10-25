@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <title>{% block title %} {% endblock %}</title>
+    
 </head>
 <body class="d-flex flex-column min-vh-100">
     {% include 'base/navigation.html' %}
@@ -16,6 +17,13 @@
 
     
     {% include 'base/footer.html' %}
+    <script>
+        '{% if request.user.is_staff %}'
+            var staff = 'True'
+        '{% else %}'
+            var staff = 'Flase'
+        '{% endif %}'
+    </script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/script.js' %}"></script>
 </body>

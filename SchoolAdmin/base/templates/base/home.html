@@ -113,28 +113,36 @@
 <div class="bg-primary">
   <div class="container text-center p-4 text-light">
     <h1>2015 Statistcs</h1>
-    <div class="row">
-      <div class="col-6 d-flex justify-content-center align-items-center">
-        <div class="card shadow-xlg h-100" style="max-width: 10rem;">
-          <div class="card-header">
-            Students
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{students.count}}</h5>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 d-flex justify-content-center align-items-center">
-        <div class="card shadow-xlg h-100" style="max-width: 10rem;">
-          <div class="card-header">
-            Teachers
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{teachers.count}}</h5>
-          </div>
-        </div>
-      </div>
-    </div>
+    <table class="table">
+            <thead class="table-primary">
+            <tr>
+                <th scope="col">Occupation</th>
+                <th scope="col">All</th>
+                <th scope="col">Males</th>
+                <th scope="col">Females</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr class="dashboard-row" href="{% url 'base:teacher_dashboard' %}">
+                    <td>Teachers</td>
+                    <td>{{ teachers.count }}</td>
+                    <td>{{ male_teachers.count }}</td>
+                    <td>{{ female_teachers.count }}</td>
+                </tr>
+                <tr class="dashboard-row" href="{% url 'base:student_dashboard' %}">
+                    <td>Students</td>
+                    <td>{{ students.count }}</td>
+                    <td>{{ male_students.count }}</td>
+                    <td>{{ female_students.count }}</td>
+                </tr>
+                <tr class="dashboard-row" href="{% url 'base:staff_dashboard' %}">
+                    <td>Staffs</td>
+                    <td>{{ staffs.count }}</td>
+                    <td>{{ male_staffs.count }}</td>
+                    <td>{{ female_staffs.count }}</td>
+                </tr>
+            </tbody>
+        </table>
   </div>
 </div>
 
