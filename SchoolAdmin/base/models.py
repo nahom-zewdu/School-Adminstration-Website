@@ -21,11 +21,21 @@ class Student(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Student')
     name = models.CharField(max_length=44, null=True, blank=True)
+    image = models.ImageField(null=True, blank=True)
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
     age = models.IntegerField(null=False, blank=False)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, null=False, blank=False)
     parent_phone = models.CharField(max_length=20, null=True)
+
+    @property
+    def image_url(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
+
     def save(self, *args, **kwargs):
         if not self.name:
             self.name = self.user.username

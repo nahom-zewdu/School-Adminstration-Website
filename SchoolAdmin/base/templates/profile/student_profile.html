@@ -11,7 +11,7 @@
 <div class="container text-center p-4">
     <div class="row p-2">
         <div class="col-3 rounded shadow-lg p-2">
-            <img src="{% static 'image/bg.jpg' %}" alt="Example Image" class="d-block img-fluid rounded" alt="...">
+            <img src="{{ student.image_url }}" alt="Student's Image" class="d-block img-fluid rounded" alt="...">
             <hr>
             <div class="mt-4 text-left">
                 <p>Name - {{ student.name }}</p>
