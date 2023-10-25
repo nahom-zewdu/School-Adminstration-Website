@@ -44,7 +44,11 @@
                             <i class="fa fa-user" aria-hidden="true"> {{user.username}} </i> 
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Settings</a>
+                            {% if user.student %}
+                                <a class="dropdown-item" href="{% url 'base:student_profile' user.student.student_id %}">Profile</a>
+                            {% elif user.teacher %}
+                                <a class="dropdown-item" href="{% url 'base:student_profile' user.teacher.teacher_id %}">Profile</a>
+                            {% endif %}
                             <a class="dropdown-item" href="{% url 'base:logout' %}">Logout</a>
                         </div>
                     </li>

@@ -33,6 +33,8 @@ urlpatterns = [
     path('parent_update/<str:pk>', views.parent_update, name='parent_update'),
     path('staff_update/<str:pk>', views.staff_update, name='staff_update'),
 
+
+    path('student_profile/<str:pk>', views.student_profile, name='student_profile')
 ]
 
 

@@ -38,7 +38,7 @@ def home(request):
         'female_staffs': female_staffs,
         'male_staffs': male_staffs,
     }
-    
+
     return render(request, 'base/home.html', context)
 
 
@@ -602,6 +602,18 @@ def staff_update(request, pk):
     }
 
     return render(request, 'dashboard/update.html', context)
+
+
+
+# Profile section
+@login_required
+def student_profile(request, pk):
+    student = Student.objects.get(student_id=pk)
+    context = {
+        'student': student,
+    }
+    return render(request, 'profile/student_profile.html', context)
+
 
 # restriction redirect veiw
 def restricted_view(request):
