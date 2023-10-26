@@ -21,7 +21,7 @@ class Student(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Student')
     name = models.CharField(max_length=44, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to='image/')
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
     age = models.IntegerField(null=False, blank=False)
@@ -166,7 +166,7 @@ class Score(models.Model):
         ('First Semester', '1st'),
         ('Second Semester', '2nd')
     ]
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name=scores)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='scores')
     semester = models.CharField(max_length=30, choices=SEMESTER_CHOICE, null=False, blank=False)
     physics = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     chemistry = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)

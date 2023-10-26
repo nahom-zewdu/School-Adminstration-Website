@@ -22,10 +22,51 @@
             </div>
         </div>
         <div class="col-12 col-md-8 p-4 shadow-lg rounded">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias quis distinctio 
-            dolores quisquam provident voluptatum ad odit unde natus ullam. Recusandae, provident.</p>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. In debitis ullam,
-             dolor quia sunt voluptatem optio alias tempora exercitationem, eius ratione possimus.</p>
+            <div class="rounded p-5 ">
+                {% if scores %}
+                    {% for score in scores %}
+                        <div class="container shadow-lg p-4 rounded">
+                            <h5>Your Score for the {{ score.semester }}</h5>
+                            <hr>
+                            {% if score.physics %}
+                                <div class="row">
+                                    <h6 class="col-5">Physics: </h6>
+                                    <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.physics}}" aria-valuemin="30" aria-valuemax="100">
+                                        <div class="progress-bar bg-Info" style="width:{{score.physics}}%;">{{score.physics}}</div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if score.biology %}
+                                <div class="row">
+                                    <h6 class="col-5">Biology: </h6>
+                                    <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.biology}}" aria-valuemin="30" aria-valuemax="100">
+                                        <div class="progress-bar bg-Info" style="width:{{score.biology}}%;">{{score.biology}}</div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if score.chemistry %}
+                                <div class="row">
+                                    <h6 class="col-5">Chemistry: </h6>
+                                    <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.chemistry}}" aria-valuemin="30" aria-valuemax="100">
+                                        <div class="progress-bar bg-Info" style="width:{{score.chemistry}}%;">{{score.chemistry}}</div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                                <h6 class="col-5">Average: </h6>
+                                <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.average}}" aria-valuemin="30" aria-valuemax="100">
+                                    <div class="progress-bar bg-Info" style="width:{{score.average}}%;">{{score.average}}%</div>
+                                </div>
+                            </div>
+                            <h4>Rank: {{ score.rank }}</h4>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                        <div class="container rounded shadow-lg p-4">
+                            <h4 class="text-danger">Your scores are not published yet!</h4>
+                        </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

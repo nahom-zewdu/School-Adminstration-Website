@@ -239,8 +239,9 @@ def teacher_register(request):
 @user_passes_test(lambda user: user.is_staff)
 def student_register(request):
     if request.method == 'POST':
-        form = StudentCreationForm(request.POST)
+        form = StudentCreationForm(request.POST, request.FILES)
         if form.is_valid():
+            print(form)
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             email = form.cleaned_data.get('email')
@@ -258,6 +259,7 @@ def student_register(request):
                 )
                 if user:
                     name = first_name + ' ' + last_name
+                    image = form.cleaned_data['image']
                     grade = form.cleaned_data.get('grade')
                     age = form.cleaned_data.get('age')
                     gender = form.cleaned_data.get('gender')
@@ -265,6 +267,7 @@ def student_register(request):
                     student = Student(
                         user=user, 
                         name=name, 
+                        image=image,
                         grade=grade, 
                         gender=gender,
                         age=age,
@@ -279,7 +282,8 @@ def student_register(request):
                         messages.error(request, 'Someting went wrong while registering Student')
                         
                 return redirect('base:student_register')
-            
+        else:
+            messages.error(request, 'Someting went wrong while registering Student')
     else:
         form = StudentCreationForm()
 
@@ -452,6 +456,8 @@ def student_update(request, pk):
                 student.age = form.cleaned_data['age']
                 student.gender = form.cleaned_data['gender']
                 student.parent_phone = form.cleaned_data['parent_phone']
+                if student.image:
+                    student.image = form.cleaned_data['image']
                 student.save()
                 if student:
                     messages.success(request, 'Student is updated successfully!')
@@ -609,8 +615,12 @@ def staff_update(request, pk):
 @login_required
 def student_profile(request, pk):
     student = Student.objects.get(student_id=pk)
+    if request.user.student != student:
+        return HttpResponse("You can't access this profile!")
+    scores = student.scores.all()
     context = {
         'student': student,
+        'scores': scores,
     }
     return render(request, 'profile/student_profile.html', context)
 

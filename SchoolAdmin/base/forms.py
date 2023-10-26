@@ -19,7 +19,7 @@ class StudentCreationForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'email', 'age', 'gender', 'grade', 'parent_phone']
+        fields = ['first_name', 'last_name', 'email','image', 'age', 'gender', 'grade', 'parent_phone']
 
 class TeacherCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
