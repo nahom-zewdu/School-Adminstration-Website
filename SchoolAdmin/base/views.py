@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermanentRedirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
-
 from django.contrib.auth.models import User
 from .models import *
 from .forms import *
+
+
+
 # Create your views here.
 
 # base views section
@@ -45,12 +47,10 @@ def home(request):
 @login_required(login_url='/restricted/')
 def student_academics(request):
     students = Student.objects.all()
-    subjects = Subject.objects.all()
     female = Student.filter_by_gender('F')
     male = Student.filter_by_gender('M')
     context = {
         'students': students,
-        'subjects': subjects,
         'female': female,
         'male': male,
     }
@@ -60,12 +60,10 @@ def student_academics(request):
 @login_required(login_url='/restricted/')
 def teacher_academics(request):
     teachers = Teacher.objects.all()
-    subjects = Subject.objects.all()
     female = Teacher.filter_by_gender('F')
     male = Teacher.filter_by_gender('M')
     context = {
         'teachers': teachers,
-        'subjects': subjects,
         'female': female,
         'male': male,
     }
@@ -442,7 +440,7 @@ def student_update(request, pk):
     student = get_object_or_404(Student, student_id=pk)
     user_update = student.user
     if request.method == 'POST':
-        form = StudentCreationForm(request.POST, instance=student)
+        form = StudentCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user_update.first_name = form.cleaned_data['first_name']
             user_update.last_name = form.cleaned_data['last_name']
@@ -452,6 +450,7 @@ def student_update(request, pk):
             user_update.save()
             if user_update:
                 student.name = user_update.first_name + ' ' + user_update.last_name
+                student.image = form.cleaned_data['image']
                 student.grade = form.cleaned_data['grade']
                 student.age = form.cleaned_data['age']
                 student.gender = form.cleaned_data['gender']
@@ -625,6 +624,28 @@ def student_profile(request, pk):
     return render(request, 'profile/student_profile.html', context)
 
 
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user = authenticate(username=request.user.username, password=current_password)
+        if user:
+            if new_password == confirm_password:
+                user.set_password(new_password)
+                user.save()
+                login(request, user)
+                messages.success(request, 'Password is successfully!')
+                return redirect('base:home')
+            else:
+                messages.error(request, 'The New Password and Confirm Password do not match!')
+                return redirect('base:change_password')
+        else:
+            messages.error(request, 'Wrong Password. Please try again!')
+            return redirect('base:change_password')
+
+    return render(request, 'dashboard/change_password.html')
 # restriction redirect veiw
 def restricted_view(request):
     return render(request, 'base/restricted.html')

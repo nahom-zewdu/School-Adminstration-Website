@@ -34,7 +34,11 @@ urlpatterns = [
     path('staff_update/<str:pk>', views.staff_update, name='staff_update'),
 
 
-    path('student_profile/<str:pk>', views.student_profile, name='student_profile')
+    path('student_profile/<str:pk>', views.student_profile, name='student_profile'),
+
+
+
+    path('change_password', views.change_password, name='change_password'),
 ]
 
 

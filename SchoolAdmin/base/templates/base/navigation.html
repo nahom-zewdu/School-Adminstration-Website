@@ -49,6 +49,7 @@
                             {% elif user.teacher %}
                                 <a class="dropdown-item" href="{% url 'base:student_profile' user.teacher.teacher_id %}">Profile</a>
                             {% endif %}
+                            <a class="dropdown-item" href="{% url 'base:change_password' %}">Change Password</a>
                             <a class="dropdown-item" href="{% url 'base:logout' %}">Logout</a>
                         </div>
                     </li>

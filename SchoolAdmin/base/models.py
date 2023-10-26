@@ -21,7 +21,7 @@ class Student(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Student')
     name = models.CharField(max_length=44, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True, upload_to='image/')
+    image = models.ImageField(null=True, blank=True, upload_to='profile/')
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
     age = models.IntegerField(null=False, blank=False)

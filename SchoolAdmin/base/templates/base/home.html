@@ -5,6 +5,11 @@
 
 {% block content %}
 
+{% for message in messages %}
+  <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">
+      {{ message }}
+  </div>
+{% endfor %}
 
 <!-- Hero section -->
 <div id="carouselExampleCaptions" class="carousel slide max-height-550" data-bs-ride="carousel">
