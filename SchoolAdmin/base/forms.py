@@ -78,7 +78,7 @@ class StaffCreationForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email', 'gender', 'phone']
 
 
-class StudentImportForm(forms.Form):
+class ExcelImportForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
@@ -93,6 +93,11 @@ class StudentCreationFormWithFile(forms.ModelForm):
     class Meta:
         model = Student
         fields = ['name', 'age', 'gender', 'grade', 'parent_phone']
+
+class TeacherCreationFormWithFile(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['name', 'gender']
 
 class ScoreForm(forms.ModelForm):
     class Meta:

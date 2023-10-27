@@ -25,6 +25,7 @@ urlpatterns = [
 
 
     path('student_register_with_file/', views.student_register_with_file, name='student_register_with_file'),
+    path('teacher_register_with_file/', views.teacher_register_with_file, name='teacher_register_with_file'),
 
     path('student_dashboard/', views.student_dashboard, name='student_dashboard'),
     path('teacher_dashboard/', views.teacher_dashboard, name='teacher_dashboard'),

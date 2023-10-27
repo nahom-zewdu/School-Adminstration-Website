@@ -77,9 +77,9 @@ class Teacher(models.Model):
     name = models.CharField(max_length=44, null=True, blank=True)
     teacher_id = models.CharField(max_length=6, editable=False, unique=True)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, blank=False, null=False)
-    department = models.CharField(max_length=20,choices=DEPARTMENT_CHOICES, null=False, blank=False)
-    experience = models.IntegerField(null=True, blank=True)
-    phone = models.CharField(max_length=20, null=False)
+    department = models.CharField(max_length=20,choices=DEPARTMENT_CHOICES, null=True, blank=True)
+    experience = models.IntegerField(null=True, blank=True, default=3)
+    phone = models.CharField(max_length=20, null=True, blank=True)
 
 
     def save(self, *args, **kwargs):

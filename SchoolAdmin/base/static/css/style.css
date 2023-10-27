@@ -61,13 +61,13 @@
 /* login form  */
 .gradient {
   /* fallback for old browsers */
-  background: #fccb90;
+  background: #40f1f1;
   
   /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(to right, #26e2f0, #3661d8, #3936dd, #b44593);
+  background: -webkit-linear-gradient(to right, #40aaf1,#67cbf3, #8daaeb, #b4d9ff);
   
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(to right,  #26e2f0, #3661d8, #3936dd, #b44593);
+  background: linear-gradient(to right, #40aaf1,#67cbf3, #8daaeb, #b4d9ff);
 }
 
 

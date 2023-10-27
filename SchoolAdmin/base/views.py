@@ -397,7 +397,7 @@ def staff_register(request):
 @user_passes_test(lambda user: user.is_staff)
 def student_register_with_file(request):
     if request.method == 'POST':
-        form = StudentImportForm(request.POST, request.FILES)
+        form = ExcelImportForm(request.POST, request.FILES)
         if form.is_valid():
             file = form.cleaned_data['file']
             if not file.name.endswith('.xlsx'):
@@ -412,13 +412,17 @@ def student_register_with_file(request):
             count = 0
             for row in sheet.iter_rows(min_row=2, values_only=True):
                 count += 1
-                student_data = {
-                    'name': str(row[0]),
-                    'grade': str(row[1]),
-                    'gender': str(row[2]),
-                    'age': str(row[3]),
-                    'parent_phone': str(row[4]),
-                }
+                try:
+                    student_data = {
+                        'name': str(row[0]),
+                        'grade': str(row[1]),
+                        'gender': str(row[2]),
+                        'age': str(row[3]),
+                    }
+                except:
+                    messages.error(request, 'It seems like the file is not supplying the required data to register Teachers.')
+                    break
+                
                 student_form = StudentCreationFormWithFile(student_data)
                 if student_form.is_valid():
                     name = student_form.cleaned_data['name']
@@ -440,14 +444,12 @@ def student_register_with_file(request):
                             grade = student_form.cleaned_data.get('grade')
                             age = student_form.cleaned_data.get('age')
                             gender = student_form.cleaned_data.get('gender')
-                            parent_phone = student_form.cleaned_data.get('parent_phone')
                             student = Student(
                                 user=user, 
                                 name=name, 
                                 grade=grade, 
                                 gender=gender,
                                 age=age,
-                                parent_phone=parent_phone,
                             )
                             if student:
                                 student.save()
@@ -472,6 +474,86 @@ def student_register_with_file(request):
         else:
             messages.error(request, 'Make sure your file is excel type')
     return render(request, 'dashboard/student_register_with_file.html')
+
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def teacher_register_with_file(request):
+    if request.method == 'POST':
+        form = ExcelImportForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form.cleaned_data['file']
+            if not file.name.endswith('.xlsx'):
+                messages.error(request, 'Wrong file type. Please make sure the file type is Excel (i.e Filename ends with .xlsx)!')
+                return render(request, 'dashboard/teacher_register_with_file.html')
+
+            wb = load_workbook(file)
+            sheet = wb.active
+
+            complete = []
+            success_count = 0
+            count = 0
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                count += 1
+                try:
+                    teacher_data = {
+                        'name': str(row[0]),
+                        'gender': str(row[1]),
+                    }
+                except:
+                    messages.error(request, 'It seems like the file is not supplying the required data to register Teachers.')
+                    break
+
+                teacher_form = TeacherCreationFormWithFile(teacher_data)
+                if teacher_form.is_valid():
+                    name = teacher_form.cleaned_data['name']
+                    first_name, last_name = teacher_form.cleaned_data['name'].split()
+                    username = first_name.lower() + '_' + last_name.lower()
+                    
+                    if User.objects.filter(username=username).exists():
+                        messages.error(request, f'{username} is already registered.')
+                        continue
+                    else:
+                        user = User.objects.create_user(
+                            username=username, 
+                            first_name=first_name, 
+                            last_name=last_name,
+                            password='@@aa12345',
+                        )
+                        if user:
+                            name = first_name + ' ' + last_name
+                            gender = teacher_form.cleaned_data.get('gender')
+                            teacher = Teacher(
+                                user=user, 
+                                name=name,
+                                gender=gender,
+                            )
+                            if teacher:
+                                teacher.save()
+                                complete.append(teacher.teacher_id)
+                                success_count += 1
+                                continue
+                            else:
+                                user.delete()
+                    messages.error(request, f'Something went wrong while registering {name}!')
+                    count += 1
+                    continue
+                                
+                else:
+                    messages.error(request, f'Make sure the fields for {row[0]} are all valid!')
+            context = {
+                'teachers': Teacher.objects.all(),
+                'complete': complete,
+                'success_count': success_count,
+                'count': count,
+            }
+            return render(request, 'dashboard/file_register_complete2.html', context)
+        else:
+            messages.error(request, 'Make sure your file is excel type')
+    return render(request, 'dashboard/teacher_register_with_file.html')
+
+
+
 
 @login_required
 @user_passes_test(lambda user: user.is_staff)
