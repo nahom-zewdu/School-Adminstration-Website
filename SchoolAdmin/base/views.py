@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from .models import *
 from .forms import *
 
-
+from openpyxl import load_workbook
 
 # Create your views here.
 
@@ -393,6 +393,85 @@ def staff_register(request):
     return render(request, 'dashboard/register.html', context)
 
 
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def student_register_with_file(request):
+    if request.method == 'POST':
+        form = StudentImportForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form.cleaned_data['file']
+            if not file.name.endswith('.xlsx'):
+                messages.error(request, 'Wrong file type. Please make sure the file type is Excel (i.e Filename ends with .xlsx)!')
+                return render(request, 'dashboard/student_register_with_file.html')
+
+            wb = load_workbook(file)
+            sheet = wb.active
+
+            complete = []
+            success_count = 0
+            count = 0
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                count += 1
+                student_data = {
+                    'name': str(row[0]),
+                    'grade': str(row[1]),
+                    'gender': str(row[2]),
+                    'age': str(row[3]),
+                    'parent_phone': str(row[4]),
+                }
+                student_form = StudentCreationFormWithFile(student_data)
+                if student_form.is_valid():
+                    name = student_form.cleaned_data['name']
+                    first_name, last_name = student_form.cleaned_data['name'].split()
+                    username = first_name.lower() + '_' + last_name.lower()
+                    
+                    if User.objects.filter(username=username).exists():
+                        messages.error(request, f'{username} is already registered. Please choose a different username.')
+                        continue
+                    else:
+                        user = User.objects.create_user(
+                            username=username, 
+                            first_name=first_name, 
+                            last_name=last_name,
+                            password='@@aa12345',
+                        )
+                        if user:
+                            name = first_name + ' ' + last_name
+                            grade = student_form.cleaned_data.get('grade')
+                            age = student_form.cleaned_data.get('age')
+                            gender = student_form.cleaned_data.get('gender')
+                            parent_phone = student_form.cleaned_data.get('parent_phone')
+                            student = Student(
+                                user=user, 
+                                name=name, 
+                                grade=grade, 
+                                gender=gender,
+                                age=age,
+                                parent_phone=parent_phone,
+                            )
+                            if student:
+                                student.save()
+                                complete.append(student.student_id)
+                                success_count += 1
+                                continue
+                            else:
+                                user.delete()
+                    messages.error(request, f'Something went wrong while registering {name}!')
+                    count += 1
+                    continue
+                                
+                else:
+                    messages.error(request, f'Make sure the fields for {row[0]} are all valid!')
+            context = {
+                'students': Student.objects.all(),
+                'complete': complete,
+                'success_count': success_count,
+                'count': count,
+            }
+            return render(request, 'dashboard/file_register_complete.html', context)
+        else:
+            messages.error(request, 'Make sure your file is excel type')
+    return render(request, 'dashboard/student_register_with_file.html')
 
 @login_required
 @user_passes_test(lambda user: user.is_staff)
