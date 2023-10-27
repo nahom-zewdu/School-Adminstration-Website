@@ -23,6 +23,9 @@ urlpatterns = [
     path('parent_register/', views.parent_register, name='parent_register'),
     path('staff_register/', views.staff_register, name='staff_register'),
 
+
+    path('student_register_with_file/', views.student_register_with_file, name='student_register_with_file'),
+
     path('student_dashboard/', views.student_dashboard, name='student_dashboard'),
     path('teacher_dashboard/', views.teacher_dashboard, name='teacher_dashboard'),
     path('staff_dashboard/', views.staff_dashboard, name='staff_dashboard'),
