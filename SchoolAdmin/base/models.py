@@ -21,12 +21,12 @@ class Student(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Student')
     name = models.CharField(max_length=44, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True, upload_to='profile/')
+    image = models.ImageField(null=True, blank=True, upload_to='profile/', default='user.jpg')
     student_id = models.CharField(max_length=6, unique=True, editable=False)
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, null=False, blank=False)
     age = models.IntegerField(null=False, blank=False)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, null=False, blank=False)
-    parent_phone = models.CharField(max_length=20, null=True)
+    parent_phone = models.CharField(max_length=20, null=True, blank=True)
 
     @property
     def image_url(self):
