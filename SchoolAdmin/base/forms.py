@@ -78,7 +78,21 @@ class StaffCreationForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'email', 'gender', 'phone']
 
 
+class StudentImportForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for visible in self.visible_fields():
+            visible.field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': visible.field.label,
+            })
+    file = forms.FileField()
 
+class StudentCreationFormWithFile(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['name', 'age', 'gender', 'grade', 'parent_phone']
 
 class ScoreForm(forms.ModelForm):
     class Meta:
