@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} MTA School {% endblock %}
+
+{% block content %}
+
+<div class="container p-5">
+    <div class="row mb-4 mx-2">
+        <a href="{% url 'base:student_register' %}" class="col-5 btn btn-primary mx-2">Register New Student</a>
+        <a href="{% url 'base:student_register_with_file' %}" class="col-5 btn btn-primary mx-2">Register With File</a>
+    </div>
+    <hr>
+    <div class="shadow-xlg">
+        {% if success_count == count %}
+            <div class="alert alert-success">
+                All students are registered successfully!
+            </div>
+        {% elif success_count == 0 %}
+            <div class="alert alert-danger">
+                No Students are registed!
+            </div>
+        {% else %}
+        <div class="alert alert-success">
+            You have registered {{ success_count }} students out of {{count}}.
+        </div>
+        {% endif %}
+        {% for message in messages %}
+            <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
+        {% endfor %}
+        <table class="table">        
+            <hr>
+            <h4 class="p-1 col-8">Below are the Students you registered now.</h4>
+            <thead class="table-primary">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Student Id</th>
+                <th scope="col">Grade</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Age</th>
+                <th scope="col">Parent Phone</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    {% if student.student_id in complete %}
+                        <tr class="dashboard-row" href="{% url 'base:student_update' student.student_id %}">
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.student_id }}</td>
+                            <td>{{ student.grade }}</td>
+                            <td>{{ student.gender }}</td>
+                            <td>{{ student.age }}</td>
+                            <td>{{ student.parent_phone }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

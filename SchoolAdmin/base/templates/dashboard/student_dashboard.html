@@ -6,11 +6,12 @@
 {% block content %}
 
 <div class="container p-5">
-    <div class="row">
-        <h2 class="p-1 col-8">Students of MTA</h2>
-        <a href="{% url 'base:student_register' %}" class="col-4 btn btn-primary">Register New Student</a>
-    </div>
+    <h2 class="p-1 col-8">Students of MTA</h2>
     <hr>
+    <div class="row mb-4 mx-2">
+        <a href="{% url 'base:student_register' %}" class="col-5 btn btn-primary mx-2">Register New Student</a>
+        <a href="{% url 'base:student_register_with_file' %}" class="col-5 btn btn-primary mx-2">Register With File</a>
+    </div>
     <div class="shadow-xlg">
         {% for message in messages %}
             <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
