@@ -5,93 +5,51 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row">    
-        <div class="col-3 bg-dark p-4 text-light" id="sidebar">
-            <div class="sidebar shadow-xlg bg-dark rounded "> 
-                <h1>Navigate</h1>
-                <hr>
-                <ul class="nav flex-column">
-                    <li class="nav-item text-light">
-                    <h6>Student Statistics</h6>
-                        <ul class="nav flex-column ">
-                            <li class="nav-item text-light"><a class="nav-link" href="#">Overall</a></li>
-                            <li class="nav-item text-light"><a class="nav-link" href="#">Gender</a></li>
-                            <li class="nav-item text-light"><a class="nav-link" href="#">Each class</a></li>
-                        </ul>
-                    </li>
-                    
-                    <li class="nav-item text-light">
-                        <h6>Student Statistics</h6>
-                        <ul class="nav flex-column ">
-                        <li class="nav-item text-light"><a class="nav-link" href="#">Overall</a></li>
-                        <li class="nav-item text-light"><a class="nav-link" href="#">Gender</a></li>
-                        <li class="nav-item text-light"><a class="nav-link" href="#">Each class</a></li>
-                        </ul>
-                    </li>
-                </ul>
+    <div class="p-4 shadow-lg">
+        <h1 class="text-center">2015 Student Statistcs</h1>
+        <hr>
+        <div class="bg-primary mb-4">
+            <div class="container text-center p-4">
+                <table class="table">
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">Occupation</th>
+                            <th scope="col">All</th>
+                            <th scope="col">Males</th>
+                            <th scope="col">Females</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="dashboard-row" href="{% url 'base:student_dashboard' %}">
+                            <td>Students</td>
+                            <td>{{ students.count }}</td>
+                            <td>{{ male.count }}</td>
+                            <td>{{ female.count }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="col-9">
-            <div class="container"> 
-                <h1>2015 Student Statistcs</h1>
-                <hr>
-                <div class="bg-primary">
-                    <div class="container text-center p-4 text-light">
-                        <div class="row">
-                            <div class="col-3 d-flex justify-content-center align-items-center">
-                                <div class="card shadow-xlg h-100" style="max-width: 10rem;">
-                                    <div class="card-header">
-                                        All Students
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{students.count}}</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-3 d-flex justify-content-center align-items-center">
-                                <div class="card shadow-xlg h-100" style="max-width: 10rem;">
-                                    <div class="card-header">
-                                        Male Students
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ male.count }}</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-3 d-flex justify-content-center align-items-center">
-                                <div class="card shadow-xlg h-100" style="max-width: 10rem;">
-                                    <div class="card-header">
-                                        Female Students
-                                    </div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ female.count }}</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
-                    modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
-                    mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
-                    modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
-                    mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
-                    modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
-                    mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
-                    modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
-                    mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
-                    modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
-                    mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
-                    modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
-                    mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!
-                </p>
-            </div>
-            
+        <div class="container">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
+                modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
+                mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
+            modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
+            mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
+                modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
+                mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
+            modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
+            mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
+                modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
+                mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum modi aspernatur dolor ab facilis odio. Esse 
+                modi placeat laboriosam praesentium veritatis voluptatibus quod blanditiis, error optio corrupti nostrum, ipsam
+                mollitia dolor molestias! Voluptatem eligendi similique magnam dolorum in vel asperiores quam modi doloribus!
+            </p>
         </div>
     </div>
 </div>

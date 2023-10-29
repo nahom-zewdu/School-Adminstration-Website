@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} MTA School {% endblock %}
+
+{% block content %}
+
+<div class="container p-5">
+    <div class="row d-flex justify-content-around">
+        <h2 class="p-1 col-7">Result Dashboard</h2>
+        <a href="{% url 'base:publish_result'%}" class="col-4 btn btn-primary mx-2">Publish Result With Excel</a>
+    </div>
+    <hr>
+    <div class="btn-group my-2">
+        <button class="btn btn-primary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Filter by grade
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'base:result_dashboard' 'all' %}">All</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:result_dashboard' 5 %}">5</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:result_dashboard' 6 %}">6</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:result_dashboard' 7 %}">7</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:result_dashboard' 8 %}">8</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:result_dashboard' 9 %}">9</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:result_dashboard' 10 %}">10</a></li>
+        </ul>
+    </div>
+    <div class="shadow-xlg">
+        {% for message in messages %}
+            <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
+        {% endfor %}
+        <table class="table">
+            <thead class="table-primary">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Student Id</th>
+                <th scope="col">Grade</th>
+                <th scope="col">Average</th>
+                <th scope="col">Rank</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr class="dashboard-row" href="{% url 'base:student_update' student.student_id %}">
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.student_id }}</td>
+                        <td>{{ student.grade }}</td>
+                        {% if student.score %}
+                            <td>{{ student.gender }}</td>
+                            <td>{{ student.age }}</td>
+                        {% else %}
+                            <td class="text-danger">Not Published</td>
+                            <td class="text-danger">Not Pulbished</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

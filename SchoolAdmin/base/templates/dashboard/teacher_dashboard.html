@@ -6,9 +6,9 @@
 {% block content %}
  
 <div class="container p-5">
-    <h2 class="p-1 col-8">Teachers of MTA</h2>
+    <h2 class="p-1">Teachers of MTA</h2>
     <hr>
-    <div class="row mb-4 mx-2">
+    <div class="row d-flex justify-content-around mb-4 mx-2">
         <a href="{% url 'base:teacher_register' %}" class="col-5 btn btn-primary mx-2">Register New Teacher</a>
         <a href="{% url 'base:teacher_register_with_file' %}" class="col-5 btn btn-primary mx-2">Register With File</a>
     </div>

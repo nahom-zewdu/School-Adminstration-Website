@@ -32,6 +32,11 @@ urlpatterns = [
     path('staff_dashboard/', views.staff_dashboard, name='staff_dashboard'),
     path('parent_dashboard/', views.parent_dashboard, name='parent_dashboard'),
 
+
+    path('result_dashboard/<str:grade>', views.result_dashboard, name='result_dashboard'),
+    path('publish_result/', views.publish_result, name='publish_result'),
+
+
     path('student_update/<str:pk>', views.student_update, name='student_update'),
     path('teacher_update/<str:pk>', views.teacher_update, name='teacher_update'),
     path('parent_update/<str:pk>', views.parent_update, name='parent_update'),
@@ -39,8 +44,6 @@ urlpatterns = [
 
 
     path('student_profile/<str:pk>', views.student_profile, name='student_profile'),
-
-
 
     path('change_password', views.change_password, name='change_password'),
 ]
