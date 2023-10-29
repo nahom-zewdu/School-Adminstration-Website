@@ -87,7 +87,7 @@ class ExcelImportForm(forms.Form):
                 'class': 'form-control',
                 'placeholder': visible.field.label,
             })
-    file = forms.FileField()
+    file = forms.FileField(required=True)
 
 class StudentCreationFormWithFile(forms.ModelForm):
     class Meta:
@@ -96,10 +96,37 @@ class StudentCreationFormWithFile(forms.ModelForm):
 
 class TeacherCreationFormWithFile(forms.ModelForm):
     class Meta:
-        model = Student
+        model = Teacher
         fields = ['name', 'gender']
 
-class ScoreForm(forms.ModelForm):
+class ScoreForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        for visible in self.visible_fields():
+            visible.field.widget.attrs.update({
+                'class': 'form-control',
+                'placeholder': visible.field.label,
+            })
+    SEMESTER_CHOICE =[
+        ('First Semester', '1st'),
+        ('Second Semester', '2nd')
+    ]
+    GRADE_CHOICES = [
+        ('5', 'Grade 5'),
+        ('6', 'Grade 6'),
+        ('7', 'Grade 7'),
+        ('8', 'Grade 8'),
+        ('9', 'Grade 9'),
+        ('10', 'Grade 10'),
+    ]
+
+    grade = forms.ChoiceField(choices=GRADE_CHOICES, required=True)
+    semester = forms.ChoiceField(choices=SEMESTER_CHOICE, required=True)
+    file = forms.FileField(required=True)
+    
+
+class PublishScoreForm(forms.ModelForm):
     class Meta:
         model = Score
-        fields = '__all__'
+        fields = ['semester' ,'physics', 'biology', 'chemistry', 'average', 'rank']
