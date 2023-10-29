@@ -465,7 +465,7 @@ def student_register_with_file(request):
                 else:
                     messages.error(request, f'Make sure the fields for {row[0]} are all valid!')
             context = {
-                'students': Student.objects.all(),
+                'students': Student.objects.order_by('name'),
                 'complete': complete,
                 'success_count': success_count,
                 'count': count,
@@ -542,7 +542,7 @@ def teacher_register_with_file(request):
                 else:
                     messages.error(request, f'Make sure the fields for {row[0]} are all valid!')
             context = {
-                'teachers': Teacher.objects.all(),
+                'teachers': Teacher.objects.order_by('name'),
                 'complete': complete,
                 'success_count': success_count,
                 'count': count,
@@ -558,7 +558,7 @@ def teacher_register_with_file(request):
 @login_required
 @user_passes_test(lambda user: user.is_staff)
 def student_dashboard(request):
-    students = Student.objects.all()
+    students = Student.objects.order_by('name')
     context = {
         'students': students,
     }
@@ -568,7 +568,7 @@ def student_dashboard(request):
 @login_required
 @user_passes_test(lambda user: user.is_staff)
 def teacher_dashboard(request):
-    teachers = Teacher.objects.all()
+    teachers = Teacher.objects.order_by('name')
     context = {
         'teachers': teachers,
     }
@@ -578,7 +578,7 @@ def teacher_dashboard(request):
 @login_required
 @user_passes_test(lambda user: user.is_staff)
 def staff_dashboard(request):
-    staffs = Staff.objects.all()
+    staffs = Staff.objects.order_by('name')
     context = {
         'staffs': staffs,
     }
@@ -587,7 +587,7 @@ def staff_dashboard(request):
 @login_required
 @user_passes_test(lambda user: user.is_staff)
 def parent_dashboard(request):
-    parents = Parent.objects.all()
+    parents = Parent.objects.order_by('name')
     context = {
         'parents': parents,
     }
@@ -775,7 +775,7 @@ def staff_update(request, pk):
 @login_required
 def student_profile(request, pk):
     student = Student.objects.get(student_id=pk)
-    if request.user.student != student:
+    if request.user.student != student and request.user.is_staff == False:
         return HttpResponse("You can't access this profile!")
     scores = student.scores.all()
     context = {
@@ -784,7 +784,7 @@ def student_profile(request, pk):
     }
     return render(request, 'profile/student_profile.html', context)
 
-
+@login_required
 def change_password(request):
     if request.method == 'POST':
         current_password = request.POST['current_password']
@@ -807,6 +807,24 @@ def change_password(request):
             return redirect('base:change_password')
 
     return render(request, 'dashboard/change_password.html')
+
+
+
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def result_dashboard(request, grade=None):
+    if grade == 'all':
+        students = Student.objects.order_by('name')
+    else:
+        students = Student.objects.filter(grade=grade)
+    
+    context = {
+        'students': students,
+    }
+    return render(request, 'dashboard/result_dashboard.html', context)
+
+
 # restriction redirect veiw
 def restricted_view(request):
     return render(request, 'base/restricted.html')
