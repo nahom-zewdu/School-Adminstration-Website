@@ -825,6 +825,87 @@ def result_dashboard(request, grade=None):
     return render(request, 'dashboard/result_dashboard.html', context)
 
 
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def publish_result(request):
+    if request.method == 'POST':
+        form = ScoreForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form.cleaned_data['file']
+            if not file.name.endswith('.xlsx'):
+                messages.error(request, 'Wrong file type. Please make sure the file type is Excel (i.e Filename ends with .xlsx)!')
+                return render(request, 'dashboard/publish_result.html')
+            semester = form.cleaned_data['semester']
+            grade = form.cleaned_data['grade']
+
+            wb = load_workbook(file)
+            sheet = wb.active
+
+            complete = []
+            success_count = 0
+            count = 0
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                count += 1
+
+                name = str(row[0])
+                try:
+                    student = Student.objects.get(name=name, grade=grade)
+                except:
+                    messages.error(request, f'{name} is not a grade {grade} student!')
+                    continue
+                try:
+                    score_data = {
+                        'semester': semester,
+                        'physics': str(row[1]),
+                        'biology': str(row[2]),
+                        'chemistry': str(row[3]),
+                        'average': str(row[4]),
+                        'rank': str(row[5]),
+                    }
+                except:
+                    messages.error(request, f'It seems like the fields of {name} are not valid.')
+                    continue
+                
+                score_form = PublishScoreForm(score_data)
+
+                if score_form.is_valid():
+                    if Score.objects.filter(student=student, semester=semester):
+                        messages.error(request, f'{semester} result for {student} is already set')
+                        continue
+                    score = Score(
+                        student = student,
+                        semester = semester,
+                        physics = score_form.cleaned_data['physics'],
+                        biology = score_form.cleaned_data['biology'],
+                        chemistry = score_form.cleaned_data['chemistry'],
+                        average = score_form.cleaned_data['average'],
+                        rank = score_form.cleaned_data['rank'],
+                    )
+                    if score:
+                        score.save()
+                        complete.append(score)
+                        success_count += 1
+                        continue
+                else:
+                    messages.error(request, f'Make sure the fields for {row[0]} are all valid!')
+            print(complete)
+            context = {
+                'scores': complete,
+                'success_count': success_count,
+                'count': count,
+            }
+            return render(request, 'dashboard/score_publish_complete.html', context)
+        else:
+            messages.error(request, 'Make sure your file is excel type')
+    
+    form = ScoreForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'dashboard/publish_result.html', context)
+
+
 # restriction redirect veiw
 def restricted_view(request):
     return render(request, 'base/restricted.html')
