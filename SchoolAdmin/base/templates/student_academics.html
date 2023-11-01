@@ -20,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="dashboard-row" href="{% url 'base:student_dashboard' %}">
+                        <tr class="dashboard-row" href="{% url 'base:student_dashboard' 'all' %}">
                             <td>Students</td>
                             <td>{{ students.count }}</td>
                             <td>{{ male.count }}</td>

@@ -315,6 +315,7 @@ def parent_register(request):
                 )
                 if user:
                     name = first_name + ' ' + last_name
+                    parent_to = form.cleaned_data['parent_to']
                     phone = form.cleaned_data.get('phone')
                     parent = Parent(
                         user=user, 
@@ -323,6 +324,7 @@ def parent_register(request):
                     )
                     if parent:
                         parent.save()
+                        parent.parent_to.set(parent_to)
                         messages.success(request, f'{name} is registered successfully!')
                         return redirect('base:dashboard')
                     else:
@@ -624,7 +626,7 @@ def student_update(request, pk):
                 student.save()
                 if student:
                     messages.success(request, 'Student is updated successfully!')
-                    return redirect('base:student_dashboard')
+                    return redirect('base:student_dashboard','all')
                 else:
                     messages.error(request, 'Error occured while updating student!')
                     return redirect('base:student_update')
@@ -707,7 +709,9 @@ def parent_update(request, pk):
             if user_update:
                 parent.name = user_update.first_name + ' ' + user_update.last_name
                 parent.phone = form.cleaned_data['phone']
+                parent_to = form.cleaned_data['parent_to']
                 parent.save()
+                parent.parent_to.set(parent_to)
                 if parent:
                     messages.success(request, 'Parent is updated successfully!')
                     return redirect('base:parent_dashboard')
