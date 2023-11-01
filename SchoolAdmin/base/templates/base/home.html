@@ -128,17 +128,17 @@
             </tr>
             </thead>
             <tbody>
-                <tr class="dashboard-row" href="{% url 'base:teacher_dashboard' %}">
+              <tr class="dashboard-row" href="{% url 'base:student_dashboard' 'all' %}">
+                  <td>Students</td>
+                  <td>{{ students.count }}</td>
+                  <td>{{ male_students.count }}</td>
+                  <td>{{ female_students.count }}</td>
+              </tr>
+              <tr class="dashboard-row" href="{% url 'base:teacher_dashboard'%}">
                     <td>Teachers</td>
                     <td>{{ teachers.count }}</td>
                     <td>{{ male_teachers.count }}</td>
                     <td>{{ female_teachers.count }}</td>
-                </tr>
-                <tr class="dashboard-row" href="{% url 'base:student_dashboard' %}">
-                    <td>Students</td>
-                    <td>{{ students.count }}</td>
-                    <td>{{ male_students.count }}</td>
-                    <td>{{ female_students.count }}</td>
                 </tr>
                 <tr class="dashboard-row" href="{% url 'base:staff_dashboard' %}">
                     <td>Staffs</td>

@@ -557,8 +557,11 @@ def teacher_register_with_file(request):
 
 @login_required
 @user_passes_test(lambda user: user.is_staff)
-def student_dashboard(request):
-    students = Student.objects.order_by('name')
+def student_dashboard(request, grade='all'):
+    students = Student.objects.filter(grade=grade)
+    if grade == 'all':
+        students = Student.objects.all()
+    students = students.order_by('name')
     context = {
         'students': students,
     }

@@ -6,11 +6,28 @@
 {% block content %}
 
 <div class="container p-5">
-    <h2 class="p-1 col-8">Students of MTA</h2>
+    <div class="row d-flex justify-content-around">
+        <h2 class="p-1 col-8">Student Dashboard</h2>
+        <a href="{% url 'base:result_dashboard' 'all' %}" class="col-3 btn btn-primary mx-2">Result Dashboard</a>
+    </div>
     <hr>
-    <div class="row mb-4 mx-2">
+    <div class="row mb-4 mx-2 justify-content-around">
         <a href="{% url 'base:student_register' %}" class="col-5 btn btn-primary mx-2">Register New Student</a>
         <a href="{% url 'base:student_register_with_file' %}" class="col-5 btn btn-primary mx-2">Register With File</a>
+    </div>
+    <div class="btn-group my-2">
+        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Filter by grade
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'base:student_dashboard' 'all' %}">All</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:student_dashboard' 5 %}">5</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:student_dashboard' 6 %}">6</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:student_dashboard' 7 %}">7</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:student_dashboard' 8 %}">8</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:student_dashboard' 9 %}">9</a></li>
+            <li><a class="dropdown-item" href="{% url 'base:student_dashboard' 10 %}">10</a></li>
+        </ul>
     </div>
     <div class="shadow-xlg">
         {% for message in messages %}
