@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import *
 from .forms import *
-
+from .utils import *
 from openpyxl import load_workbook
 
 # Create your views here.
@@ -426,7 +426,7 @@ def student_register_with_file(request):
                 student_form = StudentCreationFormWithFile(student_data)
                 if student_form.is_valid():
                     name = student_form.cleaned_data['name']
-                    first_name, last_name = student_form.cleaned_data['name'].split()
+                    first_name, last_name = student_form.cleaned_data['name'].split()[:2]
                     username = first_name.lower() + '_' + last_name.lower()
                     
                     if User.objects.filter(username=username).exists():
@@ -470,7 +470,7 @@ def student_register_with_file(request):
                 'success_count': success_count,
                 'count': count,
             }
-            return render(request, 'dashboard/file_register_complete.html', context)
+            return render(request, 'dashboard/student_file_register_complete.html', context)
         else:
             messages.error(request, 'Make sure your file is excel type')
     return render(request, 'dashboard/student_register_with_file.html')
@@ -507,7 +507,7 @@ def teacher_register_with_file(request):
                 teacher_form = TeacherCreationFormWithFile(teacher_data)
                 if teacher_form.is_valid():
                     name = teacher_form.cleaned_data['name']
-                    first_name, last_name = teacher_form.cleaned_data['name'].split()
+                    first_name, last_name = teacher_form.cleaned_data['name'].split()[:2]
                     username = first_name.lower() + '_' + last_name.lower()
                     
                     if User.objects.filter(username=username).exists():
@@ -547,7 +547,7 @@ def teacher_register_with_file(request):
                 'success_count': success_count,
                 'count': count,
             }
-            return render(request, 'dashboard/file_register_complete2.html', context)
+            return render(request, 'dashboard/teacher_file_register_complete.html', context)
         else:
             messages.error(request, 'Make sure your file is excel type')
     return render(request, 'dashboard/teacher_register_with_file.html')
@@ -775,7 +775,7 @@ def staff_update(request, pk):
 @login_required
 def student_profile(request, pk):
     student = Student.objects.get(student_id=pk)
-    if request.user.student != student and request.user.is_staff == False:
+    if request.user != student.user and not request.user.is_staff:
         return HttpResponse("You can't access this profile!")
     scores = student.scores.all()
     context = {
@@ -836,66 +836,21 @@ def publish_result(request):
             if not file.name.endswith('.xlsx'):
                 messages.error(request, 'Wrong file type. Please make sure the file type is Excel (i.e Filename ends with .xlsx)!')
                 return render(request, 'dashboard/publish_result.html')
-            semester = form.cleaned_data['semester']
-            grade = form.cleaned_data['grade']
 
             wb = load_workbook(file)
             sheet = wb.active
 
-            complete = []
-            success_count = 0
-            count = 0
-            for row in sheet.iter_rows(min_row=2, values_only=True):
-                count += 1
+            semester = form.cleaned_data['semester']
+            grade = form.cleaned_data['grade']
 
-                name = str(row[0])
-                try:
-                    student = Student.objects.get(name=name, grade=grade)
-                except:
-                    messages.error(request, f'{name} is not a grade {grade} student!')
-                    continue
-                try:
-                    score_data = {
-                        'semester': semester,
-                        'physics': str(row[1]),
-                        'biology': str(row[2]),
-                        'chemistry': str(row[3]),
-                        'average': str(row[4]),
-                        'rank': str(row[5]),
-                    }
-                except:
-                    messages.error(request, f'It seems like the fields of {name} are not valid.')
-                    continue
-                
-                score_form = PublishScoreForm(score_data)
-
-                if score_form.is_valid():
-                    if Score.objects.filter(student=student, semester=semester):
-                        messages.error(request, f'{semester} result for {student} is already set')
-                        continue
-                    score = Score(
-                        student = student,
-                        semester = semester,
-                        physics = score_form.cleaned_data['physics'],
-                        biology = score_form.cleaned_data['biology'],
-                        chemistry = score_form.cleaned_data['chemistry'],
-                        average = score_form.cleaned_data['average'],
-                        rank = score_form.cleaned_data['rank'],
-                    )
-                    if score:
-                        score.save()
-                        complete.append(score)
-                        success_count += 1
-                        continue
-                else:
-                    messages.error(request, f'Make sure the fields for {row[0]} are all valid!')
-            print(complete)
-            context = {
-                'scores': complete,
-                'success_count': success_count,
-                'count': count,
-            }
-            return render(request, 'dashboard/score_publish_complete.html', context)
+            if 1 <= int(grade) <= 5:
+                return publish_for_grade_1_to_5(request, sheet, semester, grade)  # util function that publishes resutl for grade 5 students
+            
+            elif 5 < int(grade) <= 8:
+                return publish_for_grade_6_to_8(request, sheet, semester, grade)  # util function that publishes resutl for grade 5 students
+            
+            elif 8 < int(grade) <= 10:
+                return publish_for_grade_9_and_10(request, sheet, semester, grade)  # util function that publishes resutl for grade 5 students
         else:
             messages.error(request, 'Make sure your file is excel type')
     

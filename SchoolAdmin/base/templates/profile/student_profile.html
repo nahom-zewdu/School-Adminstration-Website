@@ -26,7 +26,7 @@
                 {% if scores %}
                     {% for score in scores %}
                         <div class="container shadow-lg p-4 rounded">
-                            <h5>Your Score for the {{ score.semester }}</h5>
+                            <h5>{{ score.semester }} result</h5>
                             <hr>
                             {% if score.physics %}
                                 <div class="row">

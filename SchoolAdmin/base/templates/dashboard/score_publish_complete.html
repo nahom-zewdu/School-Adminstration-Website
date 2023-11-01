@@ -6,8 +6,13 @@
 {% block content %}
 
 <div class="container p-5">
+    <div class="row d-flex justify-content-around">
+        <h2 class="p-1 col-8">Dashboard</h2>
+        <a href="{% url 'base:result_dashboard' 'all' %}" class="col-3 btn btn-primary mx-2">Result Dashboard</a>
+    </div>
+    <hr>
     <div class="row mb-4 mx-2">
-        <a href="{% url 'base:publish_result' %}" class="col-5 btn btn-primary mx-2">Publish With File</a>
+        <a href="{% url 'base:publish_result' %}" class="col-5 btn btn-primary mx-2">Publish result from File</a>
         {% if messages %}
             <button class=" col-5 mx-2 btn btn-danger mb-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
                 click to see Error messages.
@@ -26,7 +31,6 @@
             </div>
         {% endif %}
     </div>
-    <hr>
     <div class="shadow-xlg">
         {% if success_count == count %}
             <div class="alert alert-success">

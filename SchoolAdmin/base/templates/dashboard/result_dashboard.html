@@ -47,13 +47,15 @@
                         <td>{{ student.name }}</td>
                         <td>{{ student.student_id }}</td>
                         <td>{{ student.grade }}</td>
-                        {% if student.score %}
-                            <td>{{ student.gender }}</td>
-                            <td>{{ student.age }}</td>
-                        {% else %}
-                            <td class="text-danger">Not Published</td>
-                            <td class="text-danger">Not Pulbished</td>
-                        {% endif %}
+                        {% with score=student.scores.all|first %}
+                            {% if score %}
+                                <td>{{ score.average }}</td>
+                                <td>{{ score.rank }}</td>
+                            {% else %}
+                                <td class="text-danger">Not Published</td>
+                                <td class="text-danger">Not Pulbished</td>
+                            {% endif %}
+                        {% endwith %}
                     </tr>
                 {% endfor %}
             </tbody>
