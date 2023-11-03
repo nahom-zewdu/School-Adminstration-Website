@@ -44,6 +44,7 @@ urlpatterns = [
 
 
     path('student_profile/<str:pk>', views.student_profile, name='student_profile'),
+    path('parent_profile/<str:pk>', views.parent_profile, name='parent_profile'),
 
     path('change_password', views.change_password, name='change_password'),
 ]

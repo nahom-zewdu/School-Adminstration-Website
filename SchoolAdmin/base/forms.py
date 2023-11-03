@@ -53,7 +53,7 @@ class ParentCreationForm(forms.ModelForm):
     first_name = forms.CharField(label='First Name', max_length=20, required=True)
     last_name = forms.CharField(label='Last Name', max_length=20, required=True)
     email = forms.EmailField(label='Email', required=False)
-    parent_to = forms.ModelMultipleChoiceField(queryset=Student.objects.order_by('name'))
+    parent_to = forms.ModelMultipleChoiceField(queryset=Student.objects.order_by('name'), required=False)
     class Meta:
         model = Parent
         autocomplete_fileds = ['parent_to']
