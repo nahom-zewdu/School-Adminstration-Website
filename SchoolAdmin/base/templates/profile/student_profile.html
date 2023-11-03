@@ -6,7 +6,7 @@
 {% block content %}
 
 {% for message in messages %}
-<div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
+    <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
 {% endfor %}
 <div class="container text-start py-4 px-0 ">
     <div class="row p-2 justify-content-center">
@@ -19,24 +19,23 @@
                     <p>Student Id - {{ student.student_id }}</p>
                     <p>Gender - {{ student.gender }}</p>
                     <p>Class - {{ student.grade }}</p>
-                    <p>Parent Phone - {{ student.parent_phone }}</p>
                 </div>
             </div>
         </div>
         <div class="col-12 col-md-8 p-4 shadow-lg rounded">
             <div class="rounded">
                 {% if scores %}
-                {% for score in scores %}
+                    {% for score in scores %}
                         <div class="container shadow-lg p-4 rounded mb-4">
                             <h5>{{ score.semester }} result</h5>
                             <hr>
                             {% if score.physics %}
-                            <div class="row">
-                                <h6 class="col-5">Physics: </h6>
-                                <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.physics}}" aria-valuemin="30" aria-valuemax="100">
-                                    <div class="progress-bar bg-Info" style="width:{{score.physics}}%;">{{score.physics}}</div>
+                                <div class="row">
+                                    <h6 class="col-5">Physics: </h6>
+                                    <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.physics}}" aria-valuemin="30" aria-valuemax="100">
+                                        <div class="progress-bar bg-Info" style="width:{{score.physics}}%;">{{score.physics}}</div>
+                                    </div>
                                 </div>
-                            </div>
                             {% endif %}
                             {% if score.biology %}
                                 <div class="row">
@@ -64,9 +63,9 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                        <div class="container rounded shadow-lg p-4">
-                            <h4 class="text-danger">Your scores are not published yet!</h4>
-                        </div>
+                    <div class="container rounded shadow-lg p-4">
+                        <h4 class="text-danger">Your scores are not published yet!</h4>
+                    </div>
                 {% endif %}
             </div>
         </div>

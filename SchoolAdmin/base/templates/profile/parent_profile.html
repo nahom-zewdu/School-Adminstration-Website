@@ -1,0 +1,84 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} MTA School {% endblock %}
+
+{% block content %}
+
+<div class="p-2 shadow-lg mx-5">
+    <h1 class="text-center">{{ parent.name }}</h1>
+</div>
+<div class="mx-2 mx-md-5 p-2 p-md-5 ">
+    {% if students %}
+        {% for student in students %}
+            <div class="row justify-content-center shadow-lg p-2 my-4">
+                <div class="col-8 col-md-3 rounded p-2">
+                    <div class="rounded shadow-lg p-1">
+                        <img src="{{ student.image_url }}" alt="Student's Image" class="d-block img-fluid rounded" style="width: ;" alt="...">
+                        <hr>
+                        <div class="mt-4 text-left">
+                            <p>Name - {{ student.name }}</p>
+                            <p>Student Id - {{ student.student_id }}</p>
+                            <p>Class - {{ student.grade }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-8 p-4 rounded">
+                    <div class="rounded">
+                        {% if student.scores.all %}
+                            {% for score in student.scores.all %}
+                                <div class="container shadow-lg p-4 rounded mb-4">
+                                    <h5>{{ score.semester }} result</h5>
+                                    <hr>
+                                    {% if score.physics %}
+                                        <div class="row">
+                                            <h6 class="col-5">Physics: </h6>
+                                            <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.physics}}" aria-valuemin="30" aria-valuemax="100">
+                                                <div class="progress-bar bg-Info" style="width:{{score.physics}}%;">{{score.physics}}</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if score.biology %}
+                                        <div class="row">
+                                            <h6 class="col-5">Biology: </h6>
+                                            <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.biology}}" aria-valuemin="30" aria-valuemax="100">
+                                                <div class="progress-bar bg-Info" style="width:{{score.biology}}%;">{{score.biology}}</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if score.chemistry %}
+                                        <div class="row">
+                                            <h6 class="col-5">Chemistry: </h6>
+                                            <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.chemistry}}" aria-valuemin="30" aria-valuemax="100">
+                                                <div class="progress-bar bg-Info" style="width:{{score.chemistry}}%;">{{score.chemistry}}</div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <div class="row">
+                                        <h6 class="col-5">Average: </h6>
+                                        <div class="progress col-7 mb-4 p-0" role="progressbar" aria-label="Example with label" aria-valuenow="{{score.average}}" aria-valuemin="30" aria-valuemax="100">
+                                            <div class="progress-bar bg-Info" style="width:{{score.average}}%;">{{score.average}}%</div>
+                                        </div>
+                                    </div>
+                                    <h4>Rank: {{ score.rank }}</h4>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="container rounded shadow-lg p-4">
+                                <h4 class="text-danger">{{student.name}}'s results are not published yet!</h4>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <div class="container rounded shadow-lg p-4">
+            <h3 class="text-danger text-center">You have no registered students!</h3>
+        </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}

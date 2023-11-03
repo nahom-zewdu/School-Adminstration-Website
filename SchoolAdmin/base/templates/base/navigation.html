@@ -48,6 +48,8 @@
                                 <a class="dropdown-item" href="{% url 'base:student_profile' user.student.student_id %}">Profile</a>
                             {% elif user.teacher %}
                                 <a class="dropdown-item" href="{% url 'base:student_profile' user.teacher.teacher_id %}">Profile</a>
+                            {% elif user.parent %}
+                                <a class="dropdown-item" href="{% url 'base:parent_profile' user.parent.parent_id %}">Profile</a>
                             {% endif %}
                             <a class="dropdown-item" href="{% url 'base:change_password' %}">Change Password</a>
                             <a class="dropdown-item" href="{% url 'base:logout' %}">Logout</a>
