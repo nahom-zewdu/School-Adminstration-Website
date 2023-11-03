@@ -141,6 +141,31 @@ def parent_login(request):
         return render(request, 'login/parent_login.html')
 
 
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user = authenticate(username=request.user.username, password=current_password)
+        if user:
+            if new_password == confirm_password:
+                user.set_password(new_password)
+                user.save()
+                login(request, user)
+                messages.success(request, 'Password is successfully!')
+                return redirect('base:home')
+            else:
+                messages.error(request, 'The New Password and Confirm Password do not match!')
+                return redirect('base:change_password')
+        else:
+            messages.error(request, 'Wrong Password. Please try again!')
+            return redirect('base:change_password')
+
+    return render(request, 'dashboard/change_password.html')
+
+
 
 # Dashboard Views section
 @login_required
@@ -178,59 +203,47 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', context)
 
 
+
 @login_required
 @user_passes_test(lambda user: user.is_staff)
-def teacher_register(request):
-    if request.method == 'POST':
-        form = TeacherCreationForm(request.POST)
-        if form.is_valid():
-            first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
-            email = form.cleaned_data.get('email')
-            username = first_name.strip().lower() + '_' + last_name.strip().lower()
-
-            if User.objects.filter(username=username).exists():
-                messages.error(request, f'{username} is already registered. Please choose a different username.')
-            else:
-                user = User.objects.create_user(
-                    username=username, 
-                    first_name=first_name, 
-                    last_name=last_name,
-                    email=email,
-                    password='@@aa12345',
-                )
-                if user:
-                    name = first_name + ' ' + last_name
-                    gender = form.cleaned_data.get('gender')
-                    department = form.cleaned_data.get('department')
-                    experience = form.cleaned_data.get('experience')
-                    phone = form.cleaned_data.get('phone')
-                    teacher = Teacher(
-                        user=user, 
-                        name=name, 
-                        gender=gender,
-                        department=department, 
-                        experience=experience,
-                        phone=phone,
-                    )
-                    if teacher:
-                        teacher.save()
-                        messages.success(request, f'{name} is registered successfully!')
-                        return redirect('base:dashboard')
-                    else:
-                        user.delete()
-                        messages.error(request, 'Someting went wrong while registering Teacher')
-
-                return redirect('base:teacher_register')
-            
-    else:
-        form = TeacherCreationForm()
-
+def student_dashboard(request, grade='all'):
+    students = Student.objects.filter(grade=grade)
+    if grade == 'all':
+        students = Student.objects.all()
+    students = students.order_by('name')
     context = {
-        'form': form,
-        'type': 'teacher'
+        'students': students,
     }
-    return render(request, 'dashboard/register.html', context)
+    return render(request, 'dashboard/student_dashboard.html', context)
+
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def teacher_dashboard(request):
+    teachers = Teacher.objects.order_by('name')
+    context = {
+        'teachers': teachers,
+    }
+    return render(request, 'dashboard/teacher_dashboard.html', context)
+
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def staff_dashboard(request):
+    staffs = Staff.objects.order_by('name')
+    context = {
+        'staffs': staffs,
+    }
+    return render(request, 'dashboard/staff_dashboard.html', context)
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def parent_dashboard(request):
+    parents = Parent.objects.order_by('name')
+    context = {
+        'parents': parents,
+    }
+    return render(request, 'dashboard/parent_dashboard.html', context)
 
 
 @login_required
@@ -288,6 +301,60 @@ def student_register(request):
     context = {
         'form': form,
         'type': 'student',
+    }
+    return render(request, 'dashboard/register.html', context)
+
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def teacher_register(request):
+    if request.method == 'POST':
+        form = TeacherCreationForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            username = first_name.strip().lower() + '_' + last_name.strip().lower()
+
+            if User.objects.filter(username=username).exists():
+                messages.error(request, f'{username} is already registered. Please choose a different username.')
+            else:
+                user = User.objects.create_user(
+                    username=username, 
+                    first_name=first_name, 
+                    last_name=last_name,
+                    email=email,
+                    password='@@aa12345',
+                )
+                if user:
+                    name = first_name + ' ' + last_name
+                    gender = form.cleaned_data.get('gender')
+                    department = form.cleaned_data.get('department')
+                    experience = form.cleaned_data.get('experience')
+                    phone = form.cleaned_data.get('phone')
+                    teacher = Teacher(
+                        user=user, 
+                        name=name, 
+                        gender=gender,
+                        department=department, 
+                        experience=experience,
+                        phone=phone,
+                    )
+                    if teacher:
+                        teacher.save()
+                        messages.success(request, f'{name} is registered successfully!')
+                        return redirect('base:dashboard')
+                    else:
+                        user.delete()
+                        messages.error(request, 'Someting went wrong while registering Teacher')
+
+                return redirect('base:teacher_register')
+            
+    else:
+        form = TeacherCreationForm()
+
+    context = {
+        'form': form,
+        'type': 'teacher'
     }
     return render(request, 'dashboard/register.html', context)
 
@@ -556,50 +623,6 @@ def teacher_register_with_file(request):
 
 
 
-
-@login_required
-@user_passes_test(lambda user: user.is_staff)
-def student_dashboard(request, grade='all'):
-    students = Student.objects.filter(grade=grade)
-    if grade == 'all':
-        students = Student.objects.all()
-    students = students.order_by('name')
-    context = {
-        'students': students,
-    }
-    return render(request, 'dashboard/student_dashboard.html', context)
-
-
-@login_required
-@user_passes_test(lambda user: user.is_staff)
-def teacher_dashboard(request):
-    teachers = Teacher.objects.order_by('name')
-    context = {
-        'teachers': teachers,
-    }
-    return render(request, 'dashboard/teacher_dashboard.html', context)
-
-
-@login_required
-@user_passes_test(lambda user: user.is_staff)
-def staff_dashboard(request):
-    staffs = Staff.objects.order_by('name')
-    context = {
-        'staffs': staffs,
-    }
-    return render(request, 'dashboard/staff_dashboard.html', context)
-
-@login_required
-@user_passes_test(lambda user: user.is_staff)
-def parent_dashboard(request):
-    parents = Parent.objects.order_by('name')
-    context = {
-        'parents': parents,
-    }
-    return render(request, 'dashboard/parent_dashboard.html', context)
-
-
-
 @login_required
 @user_passes_test(lambda user: user.is_staff)
 def student_update(request, pk):
@@ -782,8 +805,12 @@ def staff_update(request, pk):
 @login_required
 def student_profile(request, pk):
     student = Student.objects.get(student_id=pk)
+    if not student:
+        return HttpResponse("No student profile is found!")
+
     if request.user != student.user and not request.user.is_staff:
         return HttpResponse("You can't access this profile!")
+
     scores = student.scores.all()
     context = {
         'student': student,
@@ -791,31 +818,22 @@ def student_profile(request, pk):
     }
     return render(request, 'profile/student_profile.html', context)
 
+
 @login_required
-def change_password(request):
-    if request.method == 'POST':
-        current_password = request.POST['current_password']
-        new_password = request.POST['new_password']
-        confirm_password = request.POST['confirm_password']
+def parent_profile(request, pk):
+    parent = Parent.objects.get(parent_id=pk)
+    if not parent:
+        return HttpResponse("No parent profile is found!")
 
-        user = authenticate(username=request.user.username, password=current_password)
-        if user:
-            if new_password == confirm_password:
-                user.set_password(new_password)
-                user.save()
-                login(request, user)
-                messages.success(request, 'Password is successfully!')
-                return redirect('base:home')
-            else:
-                messages.error(request, 'The New Password and Confirm Password do not match!')
-                return redirect('base:change_password')
-        else:
-            messages.error(request, 'Wrong Password. Please try again!')
-            return redirect('base:change_password')
-
-    return render(request, 'dashboard/change_password.html')
-
-
+    if request.user != parent.user and not request.user.is_staff:
+        return HttpResponse("You can't access this profile!")
+        
+    students = parent.parent_to.all()
+    context = {
+        'parent': parent,
+        'students': students,
+    }
+    return render(request, 'profile/parent_profile.html', context)
 
 
 @login_required
@@ -851,13 +869,13 @@ def publish_result(request):
             grade = form.cleaned_data['grade']
 
             if 1 <= int(grade) <= 5:
-                return publish_for_grade_1_to_5(request, sheet, semester, grade)  # util function that publishes resutl for grade 5 students
+                return publish_for_grade_1_to_5(request, sheet, semester, grade)  # util function that publishes resutl for grade 1 upto 5 students
             
             elif 5 < int(grade) <= 8:
-                return publish_for_grade_6_to_8(request, sheet, semester, grade)  # util function that publishes resutl for grade 5 students
+                return publish_for_grade_6_to_8(request, sheet, semester, grade)  # util function that publishes resutl for grade 6 upto 8 students
             
             elif 8 < int(grade) <= 10:
-                return publish_for_grade_9_and_10(request, sheet, semester, grade)  # util function that publishes resutl for grade 5 students
+                return publish_for_grade_9_and_10(request, sheet, semester, grade)  # util function that publishes resutl for grade 9 and 10 students
         else:
             messages.error(request, 'Make sure your file is excel type')
     
