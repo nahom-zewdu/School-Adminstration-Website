@@ -2,13 +2,31 @@ from django.shortcuts import render, HttpResponse, redirect, HttpResponsePermane
 from django.urls import reverse
 from django.contrib import messages
 
-
 from .models import *
 from .forms import *
 
+import os
+from django.core.mail import send_mail
+from dotenv import load_dotenv
+load_dotenv()
+
+# ###########################################
+#      Function to send emails
+def send_email(subject, message, recipient):
+    send_mail(
+        subject=subject, 
+        message=message, 
+        from_email=os.getenv('EMAIL_HOST_USER'), 
+        recipient_list=recipient, 
+        fail_silently=True
+        )
+    print('email sent')
+    return True
+
+
 # ###########################################
 #    Functions to publish results according to the class of students
-def publish_for_grade_1_to_5(request, sheet, semester, grade):
+def publish_for_grade_9_and_10(request, sheet, semester, grade):
     complete = []
     success_count = 0
     count = 0
@@ -16,7 +34,6 @@ def publish_for_grade_1_to_5(request, sheet, semester, grade):
         count += 1
         name = str(row[0]).split()[:2]
         name = ' '.join(name)
-        print(name)
         try:
             student = Student.objects.get(name=name, grade=grade)
         except:
@@ -54,6 +71,14 @@ def publish_for_grade_1_to_5(request, sheet, semester, grade):
                 score.save()
                 complete.append(score)
                 success_count += 1
+                if student.parent_set.all():
+                    for parent in student.parent_set.all():
+                        link = 'http://127.0.0.1:8000/parent_profile/' + parent.parent_id
+                        subject = 'MTA students result published'
+                        message = f'Hello {parent.name}, \n {semester} result for your child {student.name} is published.'\
+                                f'To see the results, go to your profile in the official MTA website or click the link below. \n'\
+                                 f'{link}'   
+                        send_email(subject=subject, message=message, recipient=[parent.user.email])
                 continue
         else:
             messages.error(request, f'Make sure the fields for {row[0]} are all valid!')
@@ -73,7 +98,6 @@ def publish_for_grade_6_to_8(request, sheet, semester, grade):
         count += 1
         name = str(row[0]).split()[:2]
         name = ' '.join(name)
-        print(name)
         try:
             student = Student.objects.get(name=name, grade=grade)
         except:
@@ -111,6 +135,14 @@ def publish_for_grade_6_to_8(request, sheet, semester, grade):
                 score.save()
                 complete.append(score)
                 success_count += 1
+                if student.parent_set.all():
+                    for parent in student.parent_set.all():
+                        link = 'http://127.0.0.1:8000/parent_profile/' + parent.parent_id
+                        subject = 'MTA students result published'
+                        message = f'Hello {parent.name}, \n {semester} result for your child {student.name} is published.'\
+                                f'To see the results, go to your profile in the official MTA website or click the link below. \n'\
+                                 f'{link}'   
+                        send_email(subject=subject, message=message, recipient=[parent.user.email])
                 continue
         else:
             messages.error(request, f'Make sure the fields for {row[0]} are all valid!')
@@ -122,7 +154,7 @@ def publish_for_grade_6_to_8(request, sheet, semester, grade):
     return render(request, 'dashboard/score_publish_complete.html', context)
 
 
-def publish_for_grade_9_and_10(request, sheet, semester, grade):
+def publish_for_grade_1_t0_5(request, sheet, semester, grade):
     complete = []
     success_count = 0
     count = 0
@@ -168,6 +200,14 @@ def publish_for_grade_9_and_10(request, sheet, semester, grade):
                 score.save()
                 complete.append(score)
                 success_count += 1
+                if student.parent_set.all():
+                    for parent in student.parent_set.all():
+                        link = 'http://127.0.0.1:8000/parent_profile/' + parent.parent_id
+                        subject = 'MTA students result published'
+                        message = f'Hello {parent.name}, \n {semester} result for your child {student.name} is published.'\
+                                f'To see the results, go to your profile in the official MTA website or click the link below. \n'\
+                                 f'{link}'   
+                        send_email(subject=subject, message=message, recipient=[parent.user.email])
                 continue
         else:
             messages.error(request, f'Make sure the fields for {row[0]} are all valid!')
