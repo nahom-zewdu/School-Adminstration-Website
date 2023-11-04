@@ -154,7 +154,7 @@ def publish_for_grade_6_to_8(request, sheet, semester, grade):
     return render(request, 'dashboard/score_publish_complete.html', context)
 
 
-def publish_for_grade_1_t0_5(request, sheet, semester, grade):
+def publish_for_grade_1_to_5(request, sheet, semester, grade):
     complete = []
     success_count = 0
     count = 0
