@@ -22,9 +22,11 @@
                 <li class="nav-item" data-bs-toggle="tooltip"  data-bs-placement="bottom" data-bs-title="Coming Soon...">
                     <a class="nav-link text-light" href="#">Blog</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'announcement:announcement' %}">Announcements</a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{% url 'announcement:announcement' %}">Announcements</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link text-light" href="#">Events</a>
                 </li>

@@ -6,16 +6,14 @@
 {% block content %}
 
 <h3 class="text-light text-center bg-danger">You have to login to access this page</h3>
-<div class="container">
-    <div class="row justify-content-center">
-      <div class="p-4 col-9 mt-5 cont gradient text-light">
-        <h2 class="mb-4 text-center">Choose to Login</h2>
-        <ul class="nav bg-primary d-flex justify-content-center">
-          <li class="nav-item"><a class="text-light nav-link" href="{% url 'base:student_login' %}">Student</a></li>
-          <li class="nav-item"><a class="border border-light border-top-0 border-bottom-0 text-light nav-link" href="{% url 'base:teacher_login' %}">Teacher</a></li>
-          <li class="nav-item"><a class="border border-light border-top-0 border-bottom-0 text-light nav-link" href="{% url 'base:staff_login' %}">Staff</a></li>
-          <li class="nav-item"><a class="text-light nav-link" href="{% url 'base:parent_login' %}">Parent</a></li>
-        </ul>
+<div class="container d-flex justify-content-center">
+    <div class="p-4 col-9 mt-5 shadow-lg">
+      <h2 class="mb-4 text-center">Choose to Login</h2>
+      <div class="row justify-content-around">
+        <a href="{% url 'base:student_login' %}" class="col-5 btn btn-primary m-1">Student</a>
+        <a href="{% url 'base:teacher_login' %}" class="col-5 btn btn-primary m-1">Teacher</a>
+        <a href="{% url 'base:parent_login' %}" class="col-5 btn btn-primary m-1">Parent</a>
+        <a href="{% url 'base:staff_login' %}" class="col-5 btn btn-primary m-1">Staff</a>
       </div>
     </div>
   </div>
