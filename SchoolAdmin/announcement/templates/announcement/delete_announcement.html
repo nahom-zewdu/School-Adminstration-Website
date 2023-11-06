@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} MTA School {% endblock %}
+
+{% block content %}
+
+<div class="container m-1 m-sm-5 p-4">
+    <div class="shadow-lg p-4">
+        <p class="text-danger">
+            Are you sure you want to delete {{ announcement }}?
+        </p>
+        <div class="row justify-content-center">
+            <form action="" method="post" class="col">
+                {% csrf_token %}
+                <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+            <a href="{% url 'announcement:announcement' %}" class="col-auto bg-primary text-light d-flex align-items-center justify-content-center text-decoration-none">
+                Cancel
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

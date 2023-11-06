@@ -16,3 +16,7 @@ class DeleteAnnouncement(DeleteView):
     template_name = 'announcement/delete_announcement.html'
     success_url = reverse_lazy('announcement:announcement')
 
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'Announcement deleted successfully.')
+        return super().delete(request, *args, **kwargs)

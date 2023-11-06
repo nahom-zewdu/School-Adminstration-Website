@@ -7,7 +7,8 @@ from . import views
 app_name = 'announcement'
 
 urlpatterns = [
-    path('', views.AnnouncementList.as_view(), name='announcement')
+    path('', views.AnnouncementList.as_view(), name='announcement'),
+    path('delete_announcement/<int:pk>', views.DeleteAnnouncement.as_view(), name='delete_announcement'),
 ]
 
 
