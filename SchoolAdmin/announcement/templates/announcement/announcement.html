@@ -5,21 +5,28 @@
 
 {% block content %}
 
-<div class="container mx-0 mx-sm-5"> 
+<div class="container mx-0 mx-sm-5">
+    <div class="row m-4 d-flex justify-content-around">
+        <h2 class="p-1 col-auto">Announcements</h2>
+        {% if request.user.is_staff %}
+            <a href="{% url 'announcement:create_announcement' %}" class="col-auto btn btn-primary m-2">New Announcemnt</a>
+        {% endif %}
+        <hr>
+    </div>
+    <div class="shadow-lg p-0 p-sm-4">
         {% for message in messages %}
             <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
         {% endfor %}   
-    <div class="shadow-lg p-0 p-sm-4">
         {% if announcements.exists %}
             {% for i in announcements %}
                 <div class="shadow-lg p-2 px-3 mb-3">
                     <h5 class="mb-3">{{i}}</h5>
-                    {% if request.user.is_staff %}
-                            <a href="{% url 'announcement:delete_announcement' i.id %}" class="btn bg-danger text-light">Remove</a>
-                    {% endif %}
                     <p class="announcement-body p-1 p-sm-3">
                         {{ i.body }} 
                     </p>
+                    {% if request.user.is_staff %}
+                            <a href="{% url 'announcement:delete_announcement' i.id %}" class="btn bg-danger text-light">Remove</a>
+                    {% endif %}
                     
                     <hr class="m-0">
                     <p class="text-end mb-0"><i>{{i.creator}} | {{ i.timestamp }}</i></p>

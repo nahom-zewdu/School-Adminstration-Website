@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} MTA School {% endblock %}
+
+{% block content %}
+
+<div class="container m-1 m-sm-5 p-4">
+    <div class="shadow-lg p-4">
+        <form method="post">
+            {% csrf_token %}
+    
+            {% for message in messages %}
+                <div class="alert {%if message.tags == 'success' %} alert-success {% else %} alert-danger {% endif %}">{{ message }}</div>
+            {% endfor %}
+    
+            {% for field in form %}
+            <label for="{{field.id_for_label}}">{{ field.label }}:</label>
+                {{field}}
+                
+                {% if field.errors %}
+                    {{field.errors|join:', '}}
+                {% endif %}
+            {% endfor %}
+        
+            <div class="class="d-grid gap-2 d-md-block"">
+              <button type="submit" class="btn btn-primary mt-3 btn-block">Post</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
