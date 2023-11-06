@@ -8,6 +8,8 @@ app_name = 'announcement'
 
 urlpatterns = [
     path('', views.AnnouncementList.as_view(), name='announcement'),
+    
+    path('create_announcement/', views.CreateAnnouncement.as_view(), name='create_announcement'),
     path('delete_announcement/<int:pk>', views.DeleteAnnouncement.as_view(), name='delete_announcement'),
 ]
 
